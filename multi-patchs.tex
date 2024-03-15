@@ -4,10 +4,6 @@
 \maketitle
 
 
-\tableofcontents
-
-\newpage
-
 \section{Structure for multipatch}
 \paragraph{}
 \begin{itemize}
@@ -210,6 +206,18 @@ Problem: the mapping from the logical to the physical domain is not always inver
 	\item For an advection in the pseudo-Cartesian domain, if the feet is outside of the domain, what are the equivalent coordinate in the physical domain? 
 \end{itemize}
 
+Two fundamental possibilities:
+\begin{enumerate}
+	\item \textbf{Advect in physical domain}: If necessary, use control points of the spline mapping
+			to find the patch and then invert the spline mapping to get logical coordinates
+			(preferred by Eric)
+	\item \textbf{Advect in logical/pseudo-cartesian domain}: Extend the coordinates of the patch
+			and find coordinate transformation to logical coordinates of neighboring patches
+			(we do not know yet how to do this, it is just an idea)
+\end{enumerate}
+If the field lines do not cross the edge (ex. inside of the core), the characteristics do not cross the edge often and 
+in these cases inverting a spline mapping might be feasible. Maybe a clever combination of using logical and 
+physical coordinates in certain situations is the best approach?
 
 
 \begin{figure}[!h]
@@ -295,7 +303,7 @@ To do it, we
 
 
 
-\subsection{Futher questions}
+\subsection{Further questions}
 \paragraph{About evaluating funtions.}
 \begin{itemize}
 	\item How do we know in which patch we are?
@@ -307,18 +315,18 @@ To do it, we
 
 
 
-\paragraph{About the space splitting.}
-\begin{itemize}
-	\item Do we have the splitting of the space from another code?
-	\item Do we have mappings?
-	\item If we are using different mappings between the patches, how to stick correctly the patches at the edge? Are not risks of ill-covering (gaps or covering of two patches)? 
-\end{itemize}
+% \paragraph{About the space splitting.}
+% \begin{itemize}
+% 	\item Do we have the splitting of the space from another code?
+% 	\item Do we have mappings?
+% 	\item If we are using different mappings between the patches, how to stick correctly the patches at the edge? Are not risks of ill-covering (gaps or covering of two patches)? 
+% \end{itemize}
 
 
 \begin{figure}[!h]
 \centering
 	\includegraphics[height=15cm]{images/JET_zones2_SOLEDGE.png}
-\caption{Multi-patch decomposition.}
+\caption{Multi-patch decomposition from SOLEDGE}
 \end{figure}
 
 \newpage

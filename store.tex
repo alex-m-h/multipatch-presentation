@@ -3,13 +3,12 @@
 
 \begin{document}
 
-\section*{What information do patches store?}
+\subsection{What information do patches store?}
 \begin{itemize}
-    \item mesh points, dimension, mapping (in what form?),
+    \item mesh points, dimension (\texttt{DimXi}, \texttt{DimYi}), mapping,
             \texttt{SplineBuilder}, metadata
-    \item Boundary condition 
+    \item Boundary condition of global domain if an edge of the patch is on the global boundary,
     \item Values of functions $\rho$, $\phi$, $\mathbf{A}$ on mesh points
-    \item Values of $\nu$ on quadrature points (?)
     \item Spline coefficients of functions ($\rho$, $\phi$, $\mathbf{A}$)
     \item Reference to global domain class
 \end{itemize}

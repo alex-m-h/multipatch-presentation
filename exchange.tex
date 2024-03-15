@@ -2,20 +2,17 @@
 
 
 \begin{document}
-
-\section*{What information do patches exchange?}
+\subsection{What information do patches exchange?}
 \begin{itemize}
     \item Mesh-points (Lagrange polynomials at interfaces, 
             conforming projection)
-    \item Spline coefficients (conforming projection (?))
-    \item Local sums to compute 
+    \item Local sums to compute the derivatives at the interfaces thanks to this 
+        type of sum of spline values (Advection)
             \begin{align*}
-                \sum \alpha_i s(x_i) = \sum_{\text{Patches}} 
-                        \sum_{\text{mesh points}} \alpha_i s(x_i)
+                \sum_{x_i \in \text{global space}} \alpha_i s(x_i) = \sum_{p \in\text{Patches}} 
+                        \sum_{x_i \in p} \alpha_i s(x_i),
             \end{align*}
-    \item Mapping information (?) (Conforming projection)
-    \item Feet of characteristics (Advection)
+    \item Characteristic feet outside of the patch (Advection),
     \item Interpolated values for $\mathbf{A}$ and $\rho$ (Advection)
-    \item \textbf{Question:} But how do we get those?
 \end{itemize}
 \end{document}
