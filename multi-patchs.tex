@@ -17,7 +17,7 @@
 \paragraph{}
 
 \begin{figure}[!h]
-\begin{subfigure}{0.3333333\textwidth}
+\begin{subfigure}{0.5\textwidth}
 \centering
 \begin{tikzpicture}[xscale = 1, yscale = 1]
 %	\draw[->] (-4.25,0) -- (4.25,0);
@@ -40,66 +40,101 @@
 %	\node at (2,1.5) {$P_{+}$};
 
 	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
-	\draw[lightgray] (0,2) grid [step = 0.5] (2,4);
-	\draw[thick] (0,0) grid [step = 2] (2,4);
+	\draw[thick] (0,0) grid [step = 2] (2,2);
+	
+	\draw[red] (0,2.125) -- (2,2.125);
+	
+	\begin{scope}[shift={(2.25,0)}]
+		\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
+		\draw[thick] (0,0) grid [step = 2] (2,2);
+		
+		\draw[red] (0,-0.125) -- (2,-0.125);
+	\end{scope}
 \end{tikzpicture}
 \caption{Simple interface.}
 \end{subfigure}
-\begin{subfigure}{0.3333333\textwidth}
+\begin{subfigure}{0.5\textwidth}
 \centering
 \begin{tikzpicture}[xscale = 1, yscale = 1]
 	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
-	\draw[lightgray] (0,2) grid [step = 0.5] (2,4);
+	%\draw[lightgray] (0,2) grid [step = 0.5] (2,4);
 	\draw[thick] (0,0) grid [step = 2] (2,2);
-	\draw[thick] (0,2) grid [xstep = 1, ystep=2] (2,4);
+	%\draw[thick] (0,2) grid [xstep = 1, ystep=2] (2,4);
+	
+	\draw[red] (0,2.125) -- (1,2.125);
+	\draw[blue, dashed] (1,2.125) -- (2,2.125);
+	
+	\begin{scope}[shift={(2.25,0)}]
+		\draw[lightgray] (0,0) grid [step = 0.5] (1,2);
+		\draw[thick] (0,0) grid [xstep = 1, ystep=2] (1,2);
+		\draw[red] (0,-0.125) -- (1,-0.125);
+	\end{scope}
+	
+	\begin{scope}[shift={(3.5,0)}]
+		\draw[lightgray] (0,0) grid [step = 0.5] (1,2);
+		\draw[thick] (0,0) grid [xstep = 1, ystep=2] (1,2);
+		\draw[blue, dashed] (0,-0.125) -- (1,-0.125);
+	\end{scope}
+	
 \end{tikzpicture}
 \caption{T-joint. }
 \end{subfigure}
-\begin{subfigure}{0.3333333\textwidth}
+\begin{subfigure}{\textwidth}
 \centering
 \begin{tikzpicture}[xscale = 1, yscale = 1]
-	%\draw[thick] (0,0) -- (2,4); 
-	%\draw[thick] (2,0) -- (0,4); 
-	
-%	\foreach \x in {0, 1, 2} {
-%	
-%	}
-
-	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
-	\draw[thick] (0,0) grid [step = 2] (2,2);
-	\draw[fill = red, color=red]  (1,2) circle (2pt);
-	
-	\begin{scope}[shift={(0.25,0)}]
-		\draw[lightgray] (2,0) grid [step = 0.5] (4,2);
-		\draw[thick] (2,0) grid [step = 2] (4,2);
-		\draw[fill = red, color=red]  (3,2) circle (2pt);
-	\end{scope}
-	
-	\begin{scope}[shift={(0,0.25)}]
-		\draw[lightgray] (0,2) grid [step = 0.5] (2,4);
-		\draw[thick] (0,2) grid [step = 2] (2,4);
-		\draw[fill = red, color=red]  (1,2) circle (2pt);
-	\end{scope}
-		
-	\begin{scope}[shift={(0.25,0.25)}]
-		\draw[lightgray] (2,2) grid [step = 0.5] (4,4);
-		\draw[thick] (2,2) grid [step = 2] (4,4);
-		\draw[fill = red, color=red]  (3,2) circle (2pt);
-	\end{scope}
-	
-
 %	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
-%	\draw[lightgray] (0,2) grid [step = 0.5] (2,4);
 %	\draw[thick] (0,0) grid [step = 2] (2,2);
-%	\draw[thick] (0,2) grid [xstep = 1, ystep=2] (2,4);
+%	\draw[fill = red, color=red]  (2,2) circle (2pt);
+%	
+%	\begin{scope}[shift={(0.25,0)}]
+%		\draw[lightgray] (2,0) grid [step = 0.5] (4,2);
+%		\draw[thick] (2,0) grid [step = 2] (4,2);
+%		\draw[fill = red, color=red]  (2,2) circle (2pt);
+%	\end{scope}
+%	
+%	\begin{scope}[shift={(0,0.25)}]
+%		\draw[lightgray] (0,2) grid [step = 0.5] (2,4);
+%		\draw[thick] (0,2) grid [step = 2] (2,4);
+%		\draw[fill = red, color=red]  (2,2) circle (2pt);
+%	\end{scope}
+%		
+%	\begin{scope}[shift={(0.25,0.25)}]
+%		\draw[lightgray] (2,2) grid [step = 0.5] (4,4);
+%		\draw[thick] (2,2) grid [step = 2] (4,4);
+%		\draw[fill = red, color=red]  (2,2) circle (2pt);
+%	\end{scope}
+%	
+%	
+%	
+%	\begin{scope}[shift={(0,0.5)}]
+%		\draw[lightgray] (0,4) grid [step = 0.5] (2,6);
+%		\draw[thick] (0,4) grid [step = 2] (2,6);
+%		\draw[fill = red, color=red]  (2,4) circle (2pt);
+%	\end{scope}
+%		
+%	\begin{scope}[shift={(0.25,0.5)}]
+%		\draw[lightgray] (2,4) grid [step = 0.5] (4,6);
+%		\draw[thick] (2,4) grid [step = 2] (4,6);
+%		\draw[fill = red, color=red]  (2,4) circle (2pt);
+%	\end{scope}
+	
+	\foreach \x in {0, ..., 3}{
+		\begin{scope}[shift={(2.75*\x,0)}]
+			\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
+			\draw[thick] (0,0) grid [step = 2] (2,2);
+			\draw[fill = red, color=red]  (2,2) circle (2pt);
+		\end{scope}
+	}
 \end{tikzpicture}
 \caption{X-point.}
 \end{subfigure}
+\caption{Patches in the logical domain.}
 \end{figure}
 
 
-\section{Equations system}
-\subsection{Advection equation}
+[Insert scheme of Alex with physical domain to explain better.]
+
+\section{Advection equation}
 \paragraph{}
 In the guiding center equations example, the advection equation is given by 
 \begin{equation}
@@ -182,13 +217,13 @@ The same problem appears when we have solved the characteristic equation and wan
 	\draw[->] (1.5, 0.75) -- (2.78, 0.53) node[below]{feet}; 
 	\draw[<-] (1.5, 1.25) -- (2.78, 1.02) node[above]{value}; 
 \end{tikzpicture}
-\caption{Feet outside the patch.}
+\caption{Feet outside the patch in the physical domain.}
 \end{figure}
 
 \begin{center}
 \begin{tabular}{ |l|l| } 
  \hline
- Exchange 	&  $\bullet$ The outside feet (in the physical domain ?). \\
+ Exchange 	&  $\bullet$ The outside feet (in the physical domain?). \\
  			&  $\bullet$ The evaluated value of the advection field. \\
  			&  $\bullet$ The evaluated value of the advected function. \\
 
@@ -200,7 +235,8 @@ The same problem appears when we have solved the characteristic equation and wan
 \end{center}
 
 \paragraph{Further questions on outside feet.}
-Problem: the mapping from the logical to the physical domain is not always invertible. 
+Problem: the mapping from the logical to the physical domain is not always easily invertible. 
+.
 \begin{itemize}
 	\item For an advection in the physical domain, if the feet is outside of the domain, how to get the feet in the logical domain of another patch (could be a not invertible mapping for the other patch)?
 	\item For an advection in the pseudo-Cartesian domain, if the feet is outside of the domain, what are the equivalent coordinate in the physical domain? 
@@ -239,7 +275,6 @@ physical coordinates in certain situations is the best approach?
 		{\draw (0,0) circle (\r);}
 	\draw (0,0) circle (0.03);
 	\draw (0,0) circle (1.47);
-	
 	
 	\draw (0,0) -- (1.5*1,        1.5*0);
 	\draw (0,0) -- (1.5*0.80902,  1.5*0.58779);
@@ -280,7 +315,7 @@ To do it, we
 		\item advect the derivatives \textbf{[local method]}; 
 		\item compute the derivatives by: 
 		\begin{itemize}
-			\item using Lagrange polynomials \textbf{[global]}; 
+			\item using Lagrange polynomials \textbf{[neighbor local (only implies 2 patches)]}; 
 			\item using global spline relation \textbf{[global method]}. 
 		\end{itemize}
 	\end{itemize}
@@ -304,7 +339,7 @@ To do it, we
 
 
 \subsection{Further questions}
-\paragraph{About evaluating funtions.}
+\paragraph{About evaluating functions.}
 \begin{itemize}
 	\item How do we know in which patch we are?
 	\begin{itemize}
