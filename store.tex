@@ -1,0 +1,16 @@
+\documentclass[presentation.tex]{subfiles}
+
+
+\begin{document}
+
+\section*{What information do patches store?}
+\begin{itemize}
+    \item mesh points, dimension, mapping (in what form?),
+            \texttt{SplineBuilder}, metadata
+    \item Boundary condition 
+    \item Values of functions $\rho$, $\phi$, $\mathbf{A}$ on mesh points
+    \item Values of $\nu$ on quadrature points (?)
+    \item Spline coefficients of functions ($\rho$, $\phi$, $\mathbf{A}$)
+    \item Reference to global domain class
+\end{itemize}
+\end{document}

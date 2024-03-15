@@ -1,0 +1,329 @@
+\documentclass[presentation.tex]{subfiles}
+\begin{document}
+
+\maketitle
+
+
+\tableofcontents
+
+\newpage
+
+\section{Structure for multipatch}
+\paragraph{}
+\begin{itemize}
+	\item What should be done before September?
+	\item What kind of information do we need to store in each patch? 
+	\item What kind of information do the patches need to exchange? 
+\end{itemize}
+
+
+\subsection{Type of global space splitting}
+\paragraph{}
+
+\begin{figure}[!h]
+\begin{subfigure}{0.3333333\textwidth}
+\centering
+\begin{tikzpicture}[xscale = 1, yscale = 1]
+%	\draw[->] (-4.25,0) -- (4.25,0);
+%	\foreach \x in {-4, 0, 4}{
+%		\draw[] (\x, +2pt) -- (\x,-2pt); 
+%	}
+%	\draw[] (-4, +2pt) -- (-4,-2pt) node[below]{$x_{i-1}$};
+%	\draw[] (0, +2pt) -- (0,-2pt) node[below]{$x_{i}$};
+%	\draw[] (4, +2pt) -- (4,-2pt) node[below]{$x_{i+1}$};
+%	
+%	\node at (-4,0.5) {$s(x_{i-1})$};
+%	\node at (0,0.5) {$s(x_{i})$};
+%	\node at (4,0.5) {$s(x_{i+1})$};
+%	
+%	\node at (-4,1) {$s'(x_{i-1})$};
+%	\node at (0,1) {$s'(x_{i-1})$};
+%	\node at (4,1) {$s'(x_{i-1})$};
+%	
+%	\node at (-2,1.5) {$P_{-}$};
+%	\node at (2,1.5) {$P_{+}$};
+
+	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
+	\draw[lightgray] (0,2) grid [step = 0.5] (2,4);
+	\draw[thick] (0,0) grid [step = 2] (2,4);
+\end{tikzpicture}
+\caption{Simple interface.}
+\end{subfigure}
+\begin{subfigure}{0.3333333\textwidth}
+\centering
+\begin{tikzpicture}[xscale = 1, yscale = 1]
+	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
+	\draw[lightgray] (0,2) grid [step = 0.5] (2,4);
+	\draw[thick] (0,0) grid [step = 2] (2,2);
+	\draw[thick] (0,2) grid [xstep = 1, ystep=2] (2,4);
+\end{tikzpicture}
+\caption{T-joint. }
+\end{subfigure}
+\begin{subfigure}{0.3333333\textwidth}
+\centering
+\begin{tikzpicture}[xscale = 1, yscale = 1]
+	%\draw[thick] (0,0) -- (2,4); 
+	%\draw[thick] (2,0) -- (0,4); 
+	
+%	\foreach \x in {0, 1, 2} {
+%	
+%	}
+
+	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
+	\draw[thick] (0,0) grid [step = 2] (2,2);
+	\draw[fill = red, color=red]  (1,2) circle (2pt);
+	
+	\begin{scope}[shift={(0.25,0)}]
+		\draw[lightgray] (2,0) grid [step = 0.5] (4,2);
+		\draw[thick] (2,0) grid [step = 2] (4,2);
+		\draw[fill = red, color=red]  (3,2) circle (2pt);
+	\end{scope}
+	
+	\begin{scope}[shift={(0,0.25)}]
+		\draw[lightgray] (0,2) grid [step = 0.5] (2,4);
+		\draw[thick] (0,2) grid [step = 2] (2,4);
+		\draw[fill = red, color=red]  (1,2) circle (2pt);
+	\end{scope}
+		
+	\begin{scope}[shift={(0.25,0.25)}]
+		\draw[lightgray] (2,2) grid [step = 0.5] (4,4);
+		\draw[thick] (2,2) grid [step = 2] (4,4);
+		\draw[fill = red, color=red]  (3,2) circle (2pt);
+	\end{scope}
+	
+
+%	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
+%	\draw[lightgray] (0,2) grid [step = 0.5] (2,4);
+%	\draw[thick] (0,0) grid [step = 2] (2,2);
+%	\draw[thick] (0,2) grid [xstep = 1, ystep=2] (2,4);
+\end{tikzpicture}
+\caption{X-point.}
+\end{subfigure}
+\end{figure}
+
+
+\section{Equations system}
+\subsection{Advection equation}
+\paragraph{}
+In the guiding center equations example, the advection equation is given by 
+\begin{equation}
+\begin{aligned}
+	\partial_t \rho + A\cdot\nabla \rho = 0,
+\end{aligned}
+\end{equation}
+
+with $A$ the advection field defined on the logical domain on the physical domain axis. 
+
+
+\paragraph{Computing the advection field.}
+The advection field is computed from the solution of the Poisson equation. In the guiding center equations example,
+\begin{equation}
+	A = - \nabla \phi \wedge e_z,
+\end{equation}
+
+this computation can be done locally. 
+
+
+\begin{center}
+\begin{tabular}{ |l|l| } 
+ \hline
+ Store 	& $\bullet$ Spline representation (and values?) of $\phi$. \\
+ 		& $\bullet$ Spline representation (and values?) of $A$. \\
+  		& $\bullet$ Jacobian matrix. \\
+ \hline
+\end{tabular}
+\end{center}
+
+
+\paragraph{Solving the characteristic equation. }
+The equation to solve is 
+\begin{equation}
+\left\{
+\begin{aligned}
+	& \partial_t X(t; s, x)  = A(t,X(t; s, x)), \\
+	& X(s; s, x) = x.
+\end{aligned}
+\right.
+\end{equation}
+
+
+we compute 
+\begin{equation}
+\left\{
+\begin{aligned}
+	& \partial_t X(t^{n}; t^{n+1}, x)  = A(t, X(t^{n}; t^{n+1}, x)), \\
+	& \hat{X}(t^{n}; t^{n+1}, x) = \bar{\psi} (t^{n}; t^{n+1}, x)
+\end{aligned}
+\right.
+\end{equation}
+
+with a time integration method. In the case of Runge-Kutta method, the advection field needs to be evaluated at intermediate feet.
+
+\paragraph{\textit{Example of RK2.}}
+\begin{equation}
+\begin{aligned}
+	& X^1 = X^0 - \frac{dt}{2} A(X^0), \\
+	& X^2 = X^0 - dt A(X^1). \\
+\end{aligned}
+\end{equation}
+
+
+\paragraph{Outside the patch.}
+In case of $X^1$ is outside the patch we are working on, we need to communicate with the other patches to evaluate the advection field. 
+The same problem appears when we have solved the characteristic equation and want to evaluate the advected function $\rho$. 
+
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}[xscale = 1, yscale = 1]
+	\draw[lightgray] (0,0) grid [step = 0.5] (4,2);
+	\draw[thick] (0,0) grid [step = 2] (4,2);
+	
+	\draw[fill = red, color=red]  (1.5,1) circle (2pt);
+	
+	\node at (2.78, 0.78) {\color{red} $\times$};
+	
+	\draw[->] (1.5, 0.75) -- (2.78, 0.53) node[below]{feet}; 
+	\draw[<-] (1.5, 1.25) -- (2.78, 1.02) node[above]{value}; 
+\end{tikzpicture}
+\caption{Feet outside the patch.}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{ |l|l| } 
+ \hline
+ Exchange 	&  $\bullet$ The outside feet (in the physical domain ?). \\
+ 			&  $\bullet$ The evaluated value of the advection field. \\
+ 			&  $\bullet$ The evaluated value of the advected function. \\
+
+ \hline
+ Store 	& $\bullet$ Spline representation (and values?) of the advected function $\rho$. \\
+ 		& $\bullet$ Spline representation (and values?) of the advection field $A$. \\
+ \hline
+\end{tabular}
+\end{center}
+
+\paragraph{Further questions on outside feet.}
+Problem: the mapping from the logical to the physical domain is not always invertible. 
+\begin{itemize}
+	\item For an advection in the physical domain, if the feet is outside of the domain, how to get the feet in the logical domain of another patch (could be a not invertible mapping for the other patch)?
+	\item For an advection in the pseudo-Cartesian domain, if the feet is outside of the domain, what are the equivalent coordinate in the physical domain? 
+\end{itemize}
+
+
+
+\begin{figure}[!h]
+\begin{subfigure}{0.33333\textwidth}
+\centering
+\begin{tikzpicture}[xscale = 2, yscale = 2]
+    \draw (0,0) grid[step=0.1] (1.5,1.5);
+    \draw (0.03,0) -- (0.03,1.5);
+    \draw (1.47,0) -- (1.47,1.5);
+    \draw (0.75,0) node[below]{$r$};
+    \draw (0,0.75) node[left]{$\theta$};
+\end{tikzpicture}
+\caption{Logical domain.}
+\end{subfigure}
+\begin{subfigure}{0.33333\textwidth}
+\centering
+\begin{tikzpicture}[xscale = 1, yscale = 1]
+	\foreach \r in {0, 0.1, 0.2, ..., 1.5}
+		{\draw (0,0) circle (\r);}
+	\draw (0,0) circle (0.03);
+	\draw (0,0) circle (1.47);
+	
+	
+	\draw (0,0) -- (1.5*1,        1.5*0);
+	\draw (0,0) -- (1.5*0.80902,  1.5*0.58779);
+	\draw (0,0) -- (1.5*0.30902,  1.5*0.95106);
+	\draw (0,0) -- (1.5*-0.30902, 1.5*0.95106);
+	\draw (0,0) -- (1.5*-0.80902, 1.5*0.58779);
+	\draw (0,0) -- (1.5*-1,       1.5*0);
+	\draw (0,0) -- (1.5*-0.80902, 1.5*-0.58779);
+	\draw (0,0) -- (1.5*-0.30902, 1.5*-0.95106);
+	\draw (0,0) -- (1.5*0.30902,  1.5*-0.95106);
+	\draw (0,0) -- (1.5*0.80902,  1.5*-0.58779);
+	\draw (0,0) -- (1.5*1,        1.5*0);
+	\draw (0,0) -- (1.5*0.80902,  1.5*0.58779);
+	\draw (0,0) -- (1.5*0.30902,  1.5*0.95106);
+	\draw (0,0) -- (1.5*-0.30902, 1.5*0.95106);
+	\draw (0,0) -- (1.5*-0.80902, 1.5*0.58779);
+	\draw (0,0) -- (1.5*-1,       1.5*0);
+
+\end{tikzpicture}
+\caption{Pseudo-Cartesian domain.}
+\end{subfigure}
+\begin{subfigure}{0.33333\textwidth}
+\centering
+	\includegraphics[height=4cm]{images/Czarny_mapping.png}
+\caption{Physical domain.}
+\end{subfigure}
+\end{figure}
+
+
+
+
+\paragraph{Build a spline representation of the advected function.}
+To do it, we 
+\begin{itemize}
+	\item Evaluate the spline representation of $\rho$ at the characteristic feet \textbf{[local but need to communicate]}; 
+	\item Compute the derivatives at the interfaces of each patch. To do it, there are different methods: 
+	\begin{itemize}
+		\item advect the derivatives \textbf{[local method]}; 
+		\item compute the derivatives by: 
+		\begin{itemize}
+			\item using Lagrange polynomials \textbf{[global]}; 
+			\item using global spline relation \textbf{[global method]}. 
+		\end{itemize}
+	\end{itemize}
+	\item Build the new spline representation \textbf{[local]}.
+\end{itemize}
+
+
+\begin{center}
+\begin{tabular}{ |l|l| } 
+ \hline
+ Exchange 	&  $\bullet$ The mesh points around the interfaces for Lagrange interpolation. \\
+ 			&  $\bullet$ The value of $\rho$ around the interfaces for Lagrange interpolation. \\
+ 		 	&  $\bullet$ The sum of values of the function $\sum_i \alpha_i s(x_i) = \sum_{p \in patches}\sum_{x_i\in p} \alpha_i s(x_i)$. \\
+ \hline
+ Store 	& $\bullet$ Spline representation of the advected function $\rho$. \\
+ \hline
+\end{tabular}
+\end{center}
+
+
+
+
+\subsection{Futher questions}
+\paragraph{About evaluating funtions.}
+\begin{itemize}
+	\item How do we know in which patch we are?
+	\begin{itemize}
+		\item For a given point in the physical domain, how do we know in which subset it belongs to?
+	\end{itemize}
+	\item Let's assume we know in which patch we are, how can we evaluate a function? How can we get $\rho(x,y)$ with $(x,y)$ in the physical domain (especially when the mapping isn't invertible)?
+\end{itemize}
+
+
+
+\paragraph{About the space splitting.}
+\begin{itemize}
+	\item Do we have the splitting of the space from another code?
+	\item Do we have mappings?
+	\item If we are using different mappings between the patches, how to stick correctly the patches at the edge? Are not risks of ill-covering (gaps or covering of two patches)? 
+\end{itemize}
+
+
+\begin{figure}[!h]
+\centering
+	\includegraphics[height=15cm]{images/JET_zones2_SOLEDGE.png}
+\caption{Multi-patch decomposition.}
+\end{figure}
+
+\newpage
+
+
+\end{document}
+
+

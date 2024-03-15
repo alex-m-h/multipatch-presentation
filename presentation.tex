@@ -1,0 +1,71 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[left=1.5cm,right=1.5cm,top=3cm,bottom=1.5cm]{geometry} % page settings
+%\usepackage[english]{babel}
+\usepackage{amsmath} 	% provides many mathematical environments & tools
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[bb=dsserif]{mathalpha}  % for the 1 characteristics function
+\usepackage{bm}                     % for the 1 characteristics function
+\usepackage{chemist} 	% pour les formules chimiques. 
+\usepackage{hyperref}	% pour les hyperliens. 
+\usepackage{moreverb}	% pour verbatimtab.
+\usepackage{graphicx} 	% pour insérer des images.
+%\usepackage{subfigure} 	% pour faire des sous-figures.
+\usepackage{caption}    % ---
+\usepackage{subcaption} % ---
+\usepackage{fullpage} 	% pour la page de garde. 
+\usepackage{eso-pic} 	% pour la page de garde.
+\usepackage{pgf, tikz}	% pour les figures/schémas.
+	\usetikzlibrary{arrows,shapes,positioning}
+	\usetikzlibrary{patterns}
+	
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{propriety}{Propriety}
+%\theoremstyle{remark}
+%\newtheorem*{remark}{Remark}
+\newenvironment{proof}{\paragraph{\textit{Proof.}}}{\hfill$\square$}
+
+\usepackage{biblatex} %Imports biblatex package
+% \addbibresource{biblio/biblio.bib} %Import the bibliography file
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
+\usepackage{mathrsfs}
+
+% For bigger images 
+\makeatletter
+\newskip\@bigflushglue \@bigflushglue = -100pt plus 1fil
+\def\bigcenter{\trivlist \bigcentering\item\relax}
+\def\bigcentering{\let\\\@centercr\rightskip\@bigflushglue%
+\leftskip\@bigflushglue
+\parindent\z@\parfillskip\z@skip}
+\def\endbigcenter{\endtrivlist}
+\makeatother
+
+
+% To rotate image 
+\usepackage[figuresleft]{rotating}
+
+\title{Multi-patch}
+\author{Alexander \textsc{Hoffmann}, Pauline \textsc{Vidal}}
+\date{March 2024}
+
+\usepackage{subfiles}
+
+\begin{document}
+
+\maketitle
+
+
+\tableofcontents
+
+\newpage
+\subfile{multi-patchs.tex}
+\subfile{poisson.tex}
+\subfile{exchange.tex}
+\subfile{store.tex}
+\subfile{geometrical_info.tex}
+\end{document}
