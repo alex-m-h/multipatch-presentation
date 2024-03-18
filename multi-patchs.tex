@@ -82,51 +82,44 @@
 \begin{subfigure}{\textwidth}
 \centering
 \begin{tikzpicture}[xscale = 1, yscale = 1]
-%	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
-%	\draw[thick] (0,0) grid [step = 2] (2,2);
-%	\draw[fill = red, color=red]  (2,2) circle (2pt);
-%	
-%	\begin{scope}[shift={(0.25,0)}]
-%		\draw[lightgray] (2,0) grid [step = 0.5] (4,2);
-%		\draw[thick] (2,0) grid [step = 2] (4,2);
-%		\draw[fill = red, color=red]  (2,2) circle (2pt);
-%	\end{scope}
-%	
-%	\begin{scope}[shift={(0,0.25)}]
-%		\draw[lightgray] (0,2) grid [step = 0.5] (2,4);
-%		\draw[thick] (0,2) grid [step = 2] (2,4);
-%		\draw[fill = red, color=red]  (2,2) circle (2pt);
-%	\end{scope}
-%		
-%	\begin{scope}[shift={(0.25,0.25)}]
-%		\draw[lightgray] (2,2) grid [step = 0.5] (4,4);
-%		\draw[thick] (2,2) grid [step = 2] (4,4);
-%		\draw[fill = red, color=red]  (2,2) circle (2pt);
-%	\end{scope}
-%	
-%	
-%	
-%	\begin{scope}[shift={(0,0.5)}]
-%		\draw[lightgray] (0,4) grid [step = 0.5] (2,6);
-%		\draw[thick] (0,4) grid [step = 2] (2,6);
-%		\draw[fill = red, color=red]  (2,4) circle (2pt);
-%	\end{scope}
-%		
-%	\begin{scope}[shift={(0.25,0.5)}]
-%		\draw[lightgray] (2,4) grid [step = 0.5] (4,6);
-%		\draw[thick] (2,4) grid [step = 2] (4,6);
-%		\draw[fill = red, color=red]  (2,4) circle (2pt);
-%	\end{scope}
-	
+	% grid
 	\foreach \x in {0, ..., 3}{
 		\begin{scope}[shift={(2.75*\x,0)}]
 			\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
 			\draw[thick] (0,0) grid [step = 2] (2,2);
-			\draw[fill = red, color=red]  (2,2) circle (2pt);
+			%\draw[fill = red, color=red]  (2,2) circle (2pt);
+			%\node at (1,0) {\x};
 		\end{scope}
 	}
+	
+	\node at (1,-0.5) {1};
+	\node at (1+2.75,-0.5) {2};
+	\node at (1+2.75*2,-0.5) {3};
+	\node at (1+2.75*3,-0.5) {4};
+	
+	% Xpoint
+	\draw[fill = red, color=red]  (2,0) circle (2pt);
+	\draw[fill = red, color=red]  (2.75,0) circle (2pt);
+	\draw[fill = red, color=red]  (2.75*2,2) circle (2pt);
+	\draw[fill = red, color=red]  (2+2.75*3,2) circle (2pt);
+	
+	% Interfaces
+	\draw[red] (0+2.75,-0.125) -- (2+2.75,-0.125);
+	\draw[red] (0+2.75*2,2.125) -- (2+2.75*2,2.125);
+	
+	\draw[red, dashed] (0,-0.125) -- (2,-0.125);
+	\draw[red, dashed] (0+2.75*3,2.125) -- (2+2.75*3,2.125);
+	
+	\draw[blue] (-0.125+2.75*2,0) -- (-0.125+2.75*2,2);
+	\draw[blue] (2.125+2.75*3,0) -- (2.125+2.75*3,2);
+	
+	\draw[blue, dashed] (2.125,0) -- (2.125,2);
+	\draw[blue, dashed] (-0.125+2.75,0) -- (-0.125+2.75,2);
+	
+	
 \end{tikzpicture}
-\caption{X-point.}
+	\includegraphics[width=0.4\textwidth]{images/X_point_in_physical.png}
+\caption{X-point in logical and physical domain.}
 \end{subfigure}
 \caption{Patches in the logical domain.}
 \end{figure}
