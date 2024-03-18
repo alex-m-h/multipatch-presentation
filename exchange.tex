@@ -5,7 +5,7 @@
 \subsection{What information do patches exchange?}
 \begin{itemize}
     \item Mesh-points (Lagrange polynomials at interfaces, 
-            conforming projection)
+            conforming projection),
     \item Local sums to compute the derivatives at the interfaces thanks to this 
         type of sum of spline values (Advection)
             \begin{align*}
@@ -13,6 +13,6 @@
                         \sum_{x_i \in p} \alpha_i s(x_i),
             \end{align*}
     \item Characteristic feet outside of the patch (Advection),
-    \item Interpolated values for $\mathbf{A}$ and $\rho$ (Advection)
+    \item Interpolated values for $\mathbf{A}$ and $\rho$ (Advection).
 \end{itemize}
 \end{document}

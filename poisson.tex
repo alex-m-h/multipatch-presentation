@@ -8,14 +8,14 @@
 \end{align*}
 \begin{itemize}
     \item \textbf{Question:} Does the advection field $\mathbf{A}$ have to be
-            continuous? Emily thinks so. Then we need to enforce global $C^1$-regularity on $\phi$ 
+            continuous? Emily thinks so. Then we need to enforce global $C^1$-regularity on $\phi$.
     \item Use CONGA approach with $C^1$ conforming projection $\rightarrow$ 
             need the mesh information and spline coefficients from neighboring mesh
-            to construct 
-    \item spline coefficients of $\rho$ needed to assemble rhs
+            to construct,
+    \item Spline coefficients of $\rho$ needed to assemble rhs,
     \item Poisson solver needs to access all spline coefficients from all patches
             $\rightarrow$ need global managing of the splines, mesh etc 
-            to assemble everything
+            to assemble everything,
     \item \textbf{Question:} Do the mappings matter? It should still be local 
             averages of spline coefficients to compute the projections...
     \item \textbf{Question:}Do we make the assembly of the stiffness matrix completely global?

@@ -125,8 +125,6 @@
 \end{figure}
 
 
-[Insert scheme of Alex with physical domain to explain better.]
-
 \section{Advection equation}
 \paragraph{}
 In the guiding center equations example, the advection equation is given by 
@@ -229,7 +227,7 @@ The same problem appears when we have solved the characteristic equation and wan
 
 \paragraph{Further questions on outside feet.}
 Problem: the mapping from the logical to the physical domain is not always easily invertible. 
-.
+
 \begin{itemize}
 	\item For an advection in the physical domain, if the feet is outside of the domain, how to get the feet in the logical domain of another patch (could be a not invertible mapping for the other patch)?
 	\item For an advection in the pseudo-Cartesian domain, if the feet is outside of the domain, what are the equivalent coordinate in the physical domain? 
@@ -239,11 +237,11 @@ Two fundamental possibilities:
 \begin{enumerate}
 	\item \textbf{Advect in physical domain}: If necessary, use control points of the spline mapping
 			to find the patch and then invert the spline mapping to get logical coordinates
-			(preferred by Eric)
+			(preferred by Eric),
 	\item \textbf{Advect in logical/pseudo-cartesian domain}: Extend the coordinates of the patch
-			and find coordinate transformation to logical coordinates of neighboring patches
-			(we do not know yet how to do this, it is just an idea)
+			and find coordinate transformation to logical coordinates of neighboring patchesn(we do not know yet how to do this, it is just an idea).
 \end{enumerate}
+
 If the field lines do not cross the edge (ex. inside of the core), the characteristics do not cross the edge often and 
 in these cases inverting a spline mapping might be feasible. Maybe a clever combination of using logical and 
 physical coordinates in certain situations is the best approach?
@@ -354,7 +352,7 @@ To do it, we
 \begin{figure}[!h]
 \centering
 	\includegraphics[height=15cm]{images/JET_zones2_SOLEDGE.png}
-\caption{Multi-patch decomposition from SOLEDGE}
+\caption{Multi-patch decomposition from SOLEDGE.}
 \end{figure}
 
 \newpage
