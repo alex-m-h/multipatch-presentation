@@ -3,22 +3,79 @@
 \begin{document}
 
 \section{Poisson problem on multipatch}
+We want to solve the Poisson equation
 \begin{align*}
-    -\nabla \cdot \nu \nabla \phi = \rho
+    -\diver (\nu \grad \phi) = \rho
 \end{align*}
+using a the CONGA approach on a multipatch domain. 
+
+The CONGA approach has the main advantage that it uses patch-local 
+degrees of freedom and basis functions. The coupling of adjacent patches 
+happens through the use of projection operators onto conforming subspaces. 
+This approach has been studied by Martin Campos Pinto and Yaman Güçlü in the context of FEEC. 
+The projection operators are implemented in Psydac and 
+have been successfully applied to different problems in electromagnetics. 
+
+
+\subsection*{Very short introduction to the CONGA approach}
+This short section is just a very short
+introduction of the ideas in our context. 
+For more details see \href{https://arxiv.org/abs/2109.02553}{Campos Pinto, Güçlü (2024) - Broken-FEEC discretizations and Hodge Laplace 
+problems} and \href{https://link.springer.com/article/10.1007/s10915-023-02351-x}{Güçlü, 
+            Hadjout, Campos Pinto (2023) - A Broken FEEC Framework for Electromagnetic Problems on Mapped Multipatch Domains}
+
+
+We define discrete finite element spaces $V_h$ and $V_h^c$. 
+We assume that our domain $\Omega$ is given as a disjoint union of patches 
+$\Omega_k$, $k=1, ..., K$.
+Let $V_h(\Omega_k)$ be the finite element space on $\Omega_k$. 
+Define the basis of $V_h$ by taking the basis functions of $V_h(\Omega_k)$ and 
+extending them by zero outside of $\Omega_k$. 
+We recognize that the functions of $V_h$ can have jumps across 
+patch boundaries and are thus not continuous. 
+Hence, we call $V_h$ \textit{broken}.
+Let $V$ be a subspace of $L^2(\Omega)$ with functions fulfilling some regularity
+requirement e.g. $V=H^1(\Omega)$.
+
+We further define the conforming subspace
+\begin{align*}
+    V_h^c \vcentcolon= V_h \cap V
+\end{align*}
+i.e. the functions in $V_h$ with appropriate regularity. We then define
+projection operators
+\begin{align*}
+    P_h: V_h \rightarrow V_h^c.
+\end{align*}
+and the discrete differential operator
+\begin{align*}
+    \grad_h \vcentcolon= \grad \, P_h.
+\end{align*}
+For an operator $A$ defined on a subspace of $L^2(\Omega)$ we denote the 
+adjoint w.r.t. the $L^2$ inner product as $A^*$, if it exists.
+Then we define the CONGA Laplacian operator as $\grad_h^* (\nu \grad_h)$
+and introduce a stabilized version via
+\begin{align*}
+    \grad_h^*(\nu \grad_h) + \alpha (I-P_h^*)(I-P_h)
+\end{align*}
+where $\alpha > 0$ is some constant and $I$ is the identity. This is discretized weakly by discretizing the bilinear
+form $a_h: V_h \times V_h \rightarrow \mathbb{R}$
+\begin{align*}
+    a_h(\phi_h, \psi_h) = \int_\Omega \grad_h \phi_h \cdot \grad_h \psi_h \, dx 
+                        + \int_\Omega (I-P_h)\phi_h \, (I-P_h)\psi_h \, dx
+\end{align*}
+
+\subsection*{Applying the CONGA approach}
 \begin{itemize}
     \item \textbf{Question:} Does the advection field $\mathbf{A}$ have to be
             continuous? Emily thinks so. Then we need to enforce global $C^1$-regularity on $\phi$ 
-    \item Use CONGA approach with $C^1$ conforming projection $\rightarrow$ 
+    $\rightarrow$ Use CONGA approach with $C^1$ conforming projection $P_h$ $\rightarrow$ 
             need the mesh information and spline coefficients from neighboring mesh
-            to construct 
-    \item spline coefficients of $\rho$ needed to assemble rhs
+            to construct
+    \item Spline coefficients of $\rho$ needed to assemble the right hand side
     \item Poisson solver needs to access all spline coefficients from all patches
             $\rightarrow$ need global managing of the splines, mesh etc 
             to assemble everything
-    \item \textbf{Question:} Do the mappings matter? It should still be local 
-            averages of spline coefficients to compute the projections...
-    \item \textbf{Question:}Do we make the assembly of the stiffness matrix completely global?
+    \item \textbf{Question:} Do we make the assembly of the stiffness matrix completely global?
 \end{itemize}
 
 

@@ -9,6 +9,7 @@
 \usepackage{bm}                     % for the 1 characteristics function
 \usepackage{chemist} 	% pour les formules chimiques. 
 \usepackage{hyperref}	% pour les hyperliens. 
+\usepackage{mathtools}
 \usepackage{moreverb}	% pour verbatimtab.
 \usepackage{graphicx} 	% pour insérer des images.
 %\usepackage{subfigure} 	% pour faire des sous-figures.
@@ -27,6 +28,9 @@
 %\theoremstyle{remark}
 %\newtheorem*{remark}{Remark}
 \newenvironment{proof}{\paragraph{\textit{Proof.}}}{\hfill$\square$}
+
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\diver}{div}
 
 \usepackage{biblatex} %Imports biblatex package
 % \addbibresource{biblio/biblio.bib} %Import the bibliography file
