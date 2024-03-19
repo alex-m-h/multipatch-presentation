@@ -25,7 +25,7 @@ problems} and \href{https://link.springer.com/article/10.1007/s10915-023-02351-x
             Hadjout, Campos Pinto (2023) - A Broken FEEC Framework for Electromagnetic Problems on Mapped Multipatch Domains}
 
 
-We define discrete finite element spaces $V_h$ and $V_h^c$. 
+We define finite element spaces $V_h$ and $V_h^c$. 
 We assume that our domain $\Omega$ is given as a disjoint union of patches 
 $\Omega_k$, $k=1, ..., K$.
 Let $V_h(\Omega_k)$ be the finite element space on $\Omega_k$. 
@@ -60,7 +60,7 @@ and introduce a stabilized version via
 where $\alpha > 0$ is some constant and $I$ is the identity. This is discretized weakly by discretizing the bilinear
 form $a_h: V_h \times V_h \rightarrow \mathbb{R}$
 \begin{align*}
-    a_h(\phi_h, \psi_h) = \int_\Omega \grad_h \phi_h \cdot \grad_h \psi_h \, dx 
+    a_h(\phi_h, \psi_h) = \int_\Omega \nu \grad_h \phi_h \cdot \grad_h \psi_h \, dx 
                         + \int_\Omega (I-P_h)\phi_h \, (I-P_h)\psi_h \, dx
 \end{align*}
 
@@ -68,9 +68,11 @@ form $a_h: V_h \times V_h \rightarrow \mathbb{R}$
 \begin{itemize}
     \item \textbf{Question:} Does the advection field $\mathbf{A}$ have to be
             continuous? Emily thinks so. Then we need to enforce global $C^1$-regularity on $\phi$ 
-    $\rightarrow$ Use CONGA approach with $C^1$ conforming projection $P_h$ $\rightarrow$ 
-            need the mesh information and spline coefficients from neighboring mesh
-            to construct
+    $\rightarrow$ Use CONGA approach with $C^1$ conforming projection $P_h$
+    \item   The conforming projection is works by taking suitable average of splines close to 
+            the boundary of the patch i.e. they are local in the order of the spline support
+    \item   Need the mesh information from neighboring patches
+            to construct the projection matrices
     \item Spline coefficients of $\rho$ needed to assemble the right hand side
     \item Poisson solver needs to access all spline coefficients from all patches
             $\rightarrow$ need global managing of the splines, mesh etc 
