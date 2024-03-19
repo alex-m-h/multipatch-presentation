@@ -69,8 +69,8 @@ form $a_h: V_h \times V_h \rightarrow \mathbb{R}$
     \item \textbf{Question:} Does the advection field $\mathbf{A}$ have to be
             continuous? Emily thinks so. Then we need to enforce global $C^1$-regularity on $\phi$ 
     $\rightarrow$ Use CONGA approach with $C^1$ conforming projection $P_h$
-    \item   The conforming projection is works by taking suitable average of splines close to 
-            the boundary of the patch i.e. they are local in the order of the spline support
+    \item   The conforming projection is computed by taking suitable averages of spline coefficients close to 
+            the boundary of the patch so it only acts on splines close to the edge
     \item   Need the mesh information from neighboring patches
             to construct the projection matrices
     \item Spline coefficients of $\rho$ needed to assemble the right hand side
