@@ -189,8 +189,6 @@ The equation to solve is
 \end{aligned}
 \right.
 \end{equation}
-
-
 we compute 
 \begin{equation}
 \left\{
@@ -200,8 +198,8 @@ we compute
 \end{aligned}
 \right.
 \end{equation}
-
-with a time integration method. In the case of Runge-Kutta method, the advection field needs to be evaluated at intermediate feet.
+where $\bar{\psi}$ is a discrete flow computed with
+a time integration method. In the case of Runge-Kutta method, the advection field needs to be evaluated at intermediate feet.
 
 \paragraph{\textit{Example of RK2.}}
 \begin{equation}
@@ -248,10 +246,11 @@ The same problem appears when we have solved the characteristic equation and wan
 \end{center}
 
 \paragraph{Further questions on outside feet.}
-Problem: the mapping from the logical to the physical domain is not always easily invertible. 
+Problem: The mapping from the logical to the physical domain can be costly to invert. 
 
 \begin{itemize}
-	\item For an advection in the physical domain, if the feet is outside of the domain, how to get the feet in the logical domain of another patch (could be a not invertible mapping for the other patch)?
+	\item For an advection in the physical domain, if the feet is outside of the domain, how to get the feet in the logical domain of another patch 
+			(inverting the mapping for the other patch might be costly)?
 	\item For an advection in the pseudo-Cartesian domain, if the feet is outside of the domain, what are the equivalent coordinate in the physical domain? 
 \end{itemize}
 
@@ -358,7 +357,9 @@ To do it, we
 	\begin{itemize}
 		\item For a given point in the physical domain, how do we know in which subset it belongs to?
 	\end{itemize}
-	\item Let's assume we know in which patch we are, how can we evaluate a function? How can we get $\rho(x,y)$ with $(x,y)$ in the physical domain (especially when the mapping isn't invertible)?
+	\item Let's assume we know in which patch we are, how can we evaluate a function? 
+			How can we get $\rho(x,y)$ with $(x,y)$ in the physical domain 
+			(especially when the mapping difficult to invert)?
 \end{itemize}
 
 
