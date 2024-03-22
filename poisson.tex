@@ -28,10 +28,10 @@ problems} and \href{https://link.springer.com/article/10.1007/s10915-023-02351-x
 We define finite element spaces $V_h$ and $V_h^c$. 
 We assume that our domain $\Omega$ is given as a disjoint union of patches 
 $\Omega_k$, $k=1, ..., K$.
-Let $V_h(\Omega_k)$ be the finite element space on $\Omega_k$. 
-Define the basis of $V_h$ by taking the basis functions of $V_h(\Omega_k)$ and 
-extending them by zero outside of $\Omega_k$. 
-We recognize that the functions of $V_h$ can have jumps across 
+Let $V_h(\Omega_k)$ be the finite element space on $\Omega_k$ for every $k$. 
+Define the basis of $V_h$ by taking the union of all basis functions of $V_h(\Omega_k)$ for all $k$ and 
+extending them by zero outside of their respective patch $\Omega_k$. 
+We recognize that the functions in $V_h$ can have jumps across 
 patch boundaries and are thus not continuous. 
 Hence, we call $V_h$ \textit{broken}.
 Let $V$ be a subspace of $L^2(\Omega)$ with functions fulfilling some regularity
