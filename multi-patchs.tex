@@ -6,8 +6,9 @@
 
 \section{Structure for multipatch}
 \paragraph{}
+We are trying here to answer to the following questions: 
 \begin{itemize}
-	\item What should be done before September?
+	\item What should be done before September? % TO KEEP ? 
 	\item What kind of information do we need to store in each patch? 
 	\item What kind of information do the patches need to exchange? 
 \end{itemize}
@@ -15,30 +16,63 @@
 
 \subsection{Type of global space splitting}
 \paragraph{}
+The splitting of the global space into patches is currently not fixed. However we can encounter three types of sticking: 
+\begin{itemize}
+	\item simple interface which sticks a whole edge on ne dimension; 
+	\item T-joint which sticks interfaces with a partial edge; 
+	\item X-point where the sticking is only on one point. 
+\end{itemize}
+
+Each patch is defined on a logical domain and map the mesh points to a physical domain (cf. Fig. \ref{log_phy_domain}). 
+The figure Fig. \ref{Patches_logical_dom} gives examples of the different stickings on the logical domain. 
+
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}[xscale = 1, yscale = 1]
+	\draw[lightgray] (0,0) grid [step = 0.5] (3,3);
+	\draw[thick] (0,0) grid [step = 3] (3,3);
+	
+	\node at (-0.25, 1.5) {$\theta$}; 
+	\node at (1.5, -0.25) {$r$}; 
+	
+	\draw[->] (3.5, 1.5) -- (5.5, 1.5); 
+	\node at (4.5,1.75) {$\mathcal{F}:(r,\theta)\mapsto(x,y)$}; 
+	
+	\begin{scope}[xshift = 7.75cm, yshift = 1.5cm]
+		\foreach \r in {0, 0.1, 0.2, ..., 1.5}
+			{\draw (0,0) circle (\r);}
+		\draw (0,0) circle (0.03);
+		%\draw (0,0) circle (1.47);
+		
+		\draw (0,0) -- (1.5*1,        1.5*0);
+		\draw (0,0) -- (1.5*0.80902,  1.5*0.58779);
+		\draw (0,0) -- (1.5*0.30902,  1.5*0.95106);
+		\draw (0,0) -- (1.5*-0.30902, 1.5*0.95106);
+		\draw (0,0) -- (1.5*-0.80902, 1.5*0.58779);
+		\draw (0,0) -- (1.5*-1,       1.5*0);
+		\draw (0,0) -- (1.5*-0.80902, 1.5*-0.58779);
+		\draw (0,0) -- (1.5*-0.30902, 1.5*-0.95106);
+		\draw (0,0) -- (1.5*0.30902,  1.5*-0.95106);
+		\draw (0,0) -- (1.5*0.80902,  1.5*-0.58779);
+		\draw (0,0) -- (1.5*1,        1.5*0);
+		\draw (0,0) -- (1.5*0.80902,  1.5*0.58779);
+		\draw (0,0) -- (1.5*0.30902,  1.5*0.95106);
+		\draw (0,0) -- (1.5*-0.30902, 1.5*0.95106);
+		\draw (0,0) -- (1.5*-0.80902, 1.5*0.58779);
+		\draw (0,0) -- (1.5*-1,       1.5*0);
+		
+		\node at (-1.75, 0) {$y$}; 
+		\node at (0, -1.75) {$x$}; 
+	\end{scope}
+\end{tikzpicture}
+\caption{\label{log_phy_domain} Mapping from the logical domain to the physical domain. Example with a circular mapping.}
+\end{figure}
 
 \begin{figure}[!h]
 \begin{subfigure}{0.5\textwidth}
 \centering
 \begin{tikzpicture}[xscale = 1, yscale = 1]
-%	\draw[->] (-4.25,0) -- (4.25,0);
-%	\foreach \x in {-4, 0, 4}{
-%		\draw[] (\x, +2pt) -- (\x,-2pt); 
-%	}
-%	\draw[] (-4, +2pt) -- (-4,-2pt) node[below]{$x_{i-1}$};
-%	\draw[] (0, +2pt) -- (0,-2pt) node[below]{$x_{i}$};
-%	\draw[] (4, +2pt) -- (4,-2pt) node[below]{$x_{i+1}$};
-%	
-%	\node at (-4,0.5) {$s(x_{i-1})$};
-%	\node at (0,0.5) {$s(x_{i})$};
-%	\node at (4,0.5) {$s(x_{i+1})$};
-%	
-%	\node at (-4,1) {$s'(x_{i-1})$};
-%	\node at (0,1) {$s'(x_{i-1})$};
-%	\node at (4,1) {$s'(x_{i-1})$};
-%	
-%	\node at (-2,1.5) {$P_{-}$};
-%	\node at (2,1.5) {$P_{+}$};
-
 	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
 	\draw[thick] (0,0) grid [step = 2] (2,2);
 	
@@ -121,14 +155,19 @@
 	\includegraphics[width=0.4\textwidth]{images/X_point_in_physical.png}
 \caption{X-point in logical and physical domain.}
 \end{subfigure}
-\caption{Patches in the logical domain.}
+\caption{\label{Patches_logical_dom} Patches in the logical domain.}
 \end{figure}
 
+\newpage
+
+\paragraph{}
+We want here to stay general and to not focus on one patches decomposition of the domain. The figures Fig. \ref{Complex_geometry_1} and \ref{Complex_geometry_2} give example of more complex space. 
 
 \begin{figure*}
 	\centering
 	\includegraphics*[width=0.8\textwidth]{images/5patches_sketch.jpg}
-	\caption{Simple sketch of more complicated geometry with X-point (cyan point). 
+	\caption{\label{Complex_geometry_1}
+	          Simple sketch of more complicated geometry with X-point (cyan point). 
 			  Physical edges and corners are identified on the logical patches.
 			  This illustrates the idea how we intend to represent the multipatch geometry 
 			  using tensor-product patches.}
@@ -137,7 +176,8 @@
 \begin{figure*}
 	\centering
 	\includegraphics*[width=0.8\textwidth]{images/T-joint_sketch.jpg}
-	\caption{Quick sketch of geometry with O-point (purple point) and T-joint (cyan point).
+	\caption{\label{Complex_geometry_2}
+			  Quick sketch of geometry with O-point (purple point) and T-joint (cyan point).
 			  There is a T-joint at the cyan point because 
 			  edges from patch {\uppercase\expandafter{\romannumeral 2}}
 			  and {\uppercase\expandafter{\romannumeral 3}} are connected to the eastern edge
@@ -145,9 +185,14 @@
 			  Note that the y-dimension of patch {\uppercase\expandafter{\romannumeral 1}}
 			  is periodic.}
 \end{figure*}
+
 \newpage
 
+
 \section{Advection equation}
+\paragraph{}
+We focus on each part of the equations system solving to answer the questions raised in the introduction. We start be the advection equations. 
+
 \paragraph{}
 In the guiding center equations example, the advection equation is given by 
 \begin{equation}
@@ -156,7 +201,17 @@ In the guiding center equations example, the advection equation is given by
 \end{aligned}
 \end{equation}
 
-with $A$ the advection field defined on the logical domain on the physical domain axis. 
+with $A$ the advection field defined on the logical domain on the physical domain axis. Another example is the advection of the drift-kinetic model 
+\begin{equation}
+\begin{aligned}
+	\partial_t f 
+		+ v_{GC}\cdot \nabla_{\perp}f 
+		+ v_{\parallel} \partial_z f 
+		+ \dot{v}_{\parallel} \partial_{v_{\parallel}} f
+		= 0,
+\end{aligned}
+\end{equation}
+but it seems to raise the same questions as the guiding center equations.
 
 
 \paragraph{Computing the advection field.}
@@ -189,6 +244,8 @@ The equation to solve is
 \end{aligned}
 \right.
 \end{equation}
+
+
 we compute 
 \begin{equation}
 \left\{
@@ -198,8 +255,8 @@ we compute
 \end{aligned}
 \right.
 \end{equation}
-where $\bar{\psi}$ is a discrete flow computed with
-a time integration method. In the case of Runge-Kutta method, the advection field needs to be evaluated at intermediate feet.
+
+with a time integration method. In the case of Runge-Kutta method, the advection field needs to be evaluated at intermediate feet.
 
 \paragraph{\textit{Example of RK2.}}
 \begin{equation}
@@ -246,11 +303,10 @@ The same problem appears when we have solved the characteristic equation and wan
 \end{center}
 
 \paragraph{Further questions on outside feet.}
-Problem: The mapping from the logical to the physical domain can be costly to invert. 
+Problem: the mapping from the logical to the physical domain is not always easily invertible. 
 
 \begin{itemize}
-	\item For an advection in the physical domain, if the feet is outside of the domain, how to get the feet in the logical domain of another patch 
-			(inverting the mapping for the other patch might be costly)?
+	\item For an advection in the physical domain, if the feet is outside of the domain, how to get the feet in the logical domain of another patch (could be a not invertible mapping for the other patch)?
 	\item For an advection in the pseudo-Cartesian domain, if the feet is outside of the domain, what are the equivalent coordinate in the physical domain? 
 \end{itemize}
 
@@ -357,9 +413,7 @@ To do it, we
 	\begin{itemize}
 		\item For a given point in the physical domain, how do we know in which subset it belongs to?
 	\end{itemize}
-	\item Let's assume we know in which patch we are, how can we evaluate a function? 
-			How can we get $\rho(x,y)$ with $(x,y)$ in the physical domain 
-			(especially when the mapping difficult to invert)?
+	\item Let's assume we know in which patch we are, how can we evaluate a function? How can we get $\rho(x,y)$ with $(x,y)$ in the physical domain (especially when the mapping isn't invertible)?
 \end{itemize}
 
 
