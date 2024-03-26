@@ -411,7 +411,7 @@
 \end{frame}
 
 
-\begin{frame}{ANNEXE - Structure code}
+\begin{frame}{APPENDIX - Structure code}
 \vspace*{0.5cm}
 \centering
 \scriptsize
@@ -422,9 +422,10 @@
 	\hline
 	\textbf{\textsc{Global domain class}} \\
 	\hline
+	\textit{Define a global view of the domain.} \\
 	$\bullet$ Reference to each Patch object.\\
 	$\bullet$ Global boundaries (outside boundaries).\\
-	$\bullet$ Reference to Interface object.\\
+	$\bullet$ Reference to Interfaces object.\\
 	$\bullet$ Computation to find the patch \\ where a given coordinate is? \\
 	\hline
 \end{tabular}
@@ -432,11 +433,14 @@
 \begin{column}{0.5\textwidth}
 \begin{tabular}{|l|}
 	\hline
-	\textbf{\textsc{Interface class}}\\
+	\textbf{\textsc{Interfaces class}}\\
 	\hline
+	\textit{Define the interfaces between each patches.} \\
 	$\bullet$ Reference to each Patch object.\\
 	$\bullet$ Define interfaces between each patches.\\ 
 	(simple, T-joint, X-point). \\
+	\\
+	\\
 	\hline
 \end{tabular}
 \end{column}
@@ -449,16 +453,19 @@
 	\hline
 	\textbf{\textsc{Patch class}} \\
 	\hline
+	\textit{Define a patch.}\\ 
 	$\bullet$ Dimensions \texttt{DimRi}, \texttt{DimPi}. \\
 	$\bullet$ Discrete domains and spline domains. \\
 	$\bullet$ Local mapping. \\
+	\\
+	\\
 	\hline
 \end{tabular}
 
 
 \end{frame}
 
-\begin{frame}{ANNEXE - Drif-kinetic equations}
+\begin{frame}{APPENDIX - Drif-kinetic equations}
 \vspace*{0.5cm}
 \scriptsize
 
@@ -486,7 +493,7 @@ Advection
 \vspace*{0.25cm}
 Poisson
 \begin{itemize}
-	\item[$\rightarrow$] simular to 2D0V case.
+	\item[$\rightarrow$] similar to 2D0V case.
 \end{itemize}
 \end{frame}
 
