@@ -98,6 +98,7 @@
 % \newtheorem{remark}[lemma]{Remark}
 % \newtheorem{problem}[lemma]{Problem}
 
+\DeclareMathOperator{\grad}{grad}
 \DeclareMathOperator{\curl}{curl}
 \DeclareMathOperator{\diver}{div}
 
@@ -125,6 +126,7 @@
 
 
 \frame{\titlepage}
+
 
 
 
@@ -408,6 +410,70 @@
 \end{tikzpicture}
 \end{figure}
 \end{frame}
+
+\begin{frame}{Solving Poisson with CONGA}
+	We want to solve the Poisson equation
+	\begin{align*}
+		-\diver (\nu \grad \phi) = \rho
+	\end{align*}
+	using a the CONGA approach on a 2D multipatch domain. 
+	\begin{itemize}
+		\item Have finite element space $V_h$ with jump discontinuities across edges
+		\item Subspace $V_h^c \subseteq V_h$ with functions conforming to some global
+				regularity constraint
+		\item Define projection $P_h: V_h \rightarrow V_h^c$
+				and discrete differential operator $\grad_h \vcentcolon= \grad P_h$
+		\item Discretize Poisson equation weakly using these operators
+	\end{itemize}
+	\begin{alertblock}{}
+		\begin{itemize}
+			\item Already implemented in Psydac and successfully applied to several problems. 
+			\item Probably easier to generalize to complicated geometries than other approaches
+					like using different splines e.g.
+		\end{itemize}
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}{Patch data -- Exchange}
+	\begin{itemize}
+		\item Mesh-points,
+		\item Local sums to compute the derivatives at the interfaces
+				\begin{align*}
+					\sum_{x_i \in \text{global space}} \alpha_i s(x_i) = \sum_{p \in\text{Patches}} 
+							\sum_{x_i \in p} \alpha_i s(x_i),
+				\end{align*}
+		\item Characteristic feet outside of the patch,
+		\item Interpolated values for $\mathbf{A}$ and $\rho$.
+	\end{itemize}
+\end{frame}
+\begin{frame}{Patch data -- Storage}
+	\begin{itemize}
+		\item Mesh points, dimension (\texttt{DimXi}, \texttt{DimYi}), mapping,
+				\texttt{SplineBuilder}, metadata, 
+		\item Boundary condition of global domain if an edge of the patch is on the global boundary,
+		\item Values of functions $\rho$, $\phi$, $\mathbf{A}$ on mesh points,
+		\item Spline coefficients of functions ($\rho$, $\phi$, $\mathbf{A}$),
+		\item Reference to global domain class.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Global domain}
+	\begin{itemize}
+		\item Global domain class
+		\begin{itemize}
+			\item References to patches,
+			\item 'Connectivity' class which encodes the geometrical information.
+		\end{itemize}
+		\item Connectivity class
+		\begin{itemize}
+			\item Identify edges and corners of different patches (do we need to identify
+					corners of same patch e.g. when it closes on itself?)
+			\item For T-joint, identify sections of edges with sections of other edges, 
+					place corners in the middle of edges.
+		\end{itemize}
+		
+	\end{itemize}
+	\end{frame}
 
 
 \begin{frame}{APPENDIX - Structure code}
