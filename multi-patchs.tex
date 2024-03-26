@@ -26,50 +26,6 @@ The splitting of the global space into patches is currently not fixed. However w
 Each patch is defined on a logical domain and maps the mesh points to a physical domain (cf. Fig. \ref{log_phy_domain}). 
 The figure Fig. \ref{Patches_logical_dom} gives examples of the different stickings on the logical domain. 
 
-
-%\begin{figure}[!h]
-%\centering
-%\begin{tikzpicture}[xscale = 1, yscale = 1]
-%	\draw[lightgray] (0,0) grid [step = 0.5] (3,3);
-%	\draw[thick] (0,0) grid [step = 3] (3,3);
-%	
-%	\node at (-0.25, 1.5) {$\theta$}; 
-%	\node at (1.5, -0.25) {$r$}; 
-%	
-%	\draw[->] (3.5, 1.5) -- (5.5, 1.5); 
-%	\node at (4.5,1.75) {$\mathcal{F}:(r,\theta)\mapsto(x,y)$}; 
-%	
-%	\begin{scope}[xshift = 7.75cm, yshift = 1.5cm]
-%		\foreach \r in {0, 0.1, 0.2, ..., 1.5}
-%			{\draw (0,0) circle (\r);}
-%		\draw (0,0) circle (0.03);
-%		%\draw (0,0) circle (1.47);
-%		
-%		\draw (0,0) -- (1.5*1,        1.5*0);
-%		\draw (0,0) -- (1.5*0.80902,  1.5*0.58779);
-%		\draw (0,0) -- (1.5*0.30902,  1.5*0.95106);
-%		\draw (0,0) -- (1.5*-0.30902, 1.5*0.95106);
-%		\draw (0,0) -- (1.5*-0.80902, 1.5*0.58779);
-%		\draw (0,0) -- (1.5*-1,       1.5*0);
-%		\draw (0,0) -- (1.5*-0.80902, 1.5*-0.58779);
-%		\draw (0,0) -- (1.5*-0.30902, 1.5*-0.95106);
-%		\draw (0,0) -- (1.5*0.30902,  1.5*-0.95106);
-%		\draw (0,0) -- (1.5*0.80902,  1.5*-0.58779);
-%		\draw (0,0) -- (1.5*1,        1.5*0);
-%		\draw (0,0) -- (1.5*0.80902,  1.5*0.58779);
-%		\draw (0,0) -- (1.5*0.30902,  1.5*0.95106);
-%		\draw (0,0) -- (1.5*-0.30902, 1.5*0.95106);
-%		\draw (0,0) -- (1.5*-0.80902, 1.5*0.58779);
-%		\draw (0,0) -- (1.5*-1,       1.5*0);
-%		
-%		\node at (-1.75, 0) {$y$}; 
-%		\node at (0, -1.75) {$x$}; 
-%	\end{scope}
-%\end{tikzpicture}
-%\caption{\label{log_phy_domain} Mapping from the logical domain to the physical domain. Example with a circular mapping.}
-%\end{figure}
-
-
 \begin{figure}[!h]
 \centering
 \begin{tikzpicture}[xscale = 1, yscale = 1]
