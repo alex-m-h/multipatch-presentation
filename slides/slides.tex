@@ -50,6 +50,8 @@
 \usepackage{tikz-cd}
 \usepackage{url}
 
+\usepackage{subcaption} 
+
 \pgfplotsset{compat=1.18}
 \usetikzlibrary{arrows}
 \usetikzlibrary{decorations.pathreplacing,decorations.markings}
@@ -112,7 +114,7 @@
 % extended graphicspath to use separate image directories without the bundle being installed
 \graphicspath{{}{img/}{img/titlegraphic/}}
 
-\title{Multipatch ????}
+\title{Requirements for multipatch geometry}
 % \subtitle{presentations using \LaTeX}
 \author{Pauline Vidal, Alexander Hoffmann}
 % \institute{\inst{1}pei\TeX{} \and\inst{2}Institut 2}
@@ -124,6 +126,291 @@
 
 
 \frame{\titlepage}
+
+
+
+
+\begin{frame}{Structure of multi-patch}
+
+\begin{figure}[!h]
+\begin{subfigure}{0.8\textwidth}
+\centering
+\tiny
+\begin{tikzpicture}[xscale = 0.4, yscale = 0.4]
+	% logical grid
+	\draw[lightgray] (0,0) grid [step = 0.5] (3,3);
+	\draw[thick] (0,0) grid [step = 3] (3,3);
+	
+	\node at (-0.25, 1.5) {$\theta$}; 
+	\node at (1.5, -0.25) {$r$}; 
+	
+	\node at (1.5,-1) {Logical domain} ; % subtitle
+	
+	% mapping
+	\begin{scope}[xshift =1.5cm]	
+		\draw[->] (3.5, 1.5) -- (5.5, 1.5); 
+		\node at (4.5,1.75) {$\mathcal{F}:(r,\theta)\mapsto(x,y)$}; 
+		
+		\node at (4.5,-0.5) {Mapping} ; % title
+	\end{scope}
+	
+	\begin{scope}[xshift = 11cm, yshift = 1.5cm]	
+		% physical grid
+		\def\Rmax{1.5}
+		\foreach \r in {0, 0.1, ...,\Rmax} {
+		    \draw[gray] (0,0) circle (\r);
+		}
+		\foreach \theta in {0, 40,...,360} {
+    			\draw[gray] (0,0) -- (\theta:\Rmax);
+		}
+		
+		\draw[black] (0,0) circle (\Rmax);
+		\draw[black] (0,0) -- (0:\Rmax);
+		
+		\node at (-1.75, 0) {$y$}; 
+		\node at (0, -1.75) {$x$}; 
+		
+		\node at (0,-2.5) {Physical domain} ; % subtitle
+	\end{scope}
+	
+	\node at (30,0) { }; % just to put the figure on the left side on the slide. 
+	
+	
+	
+\end{tikzpicture}
+\end{subfigure}
+\begin{subfigure}{0.2\textwidth}
+\centering
+\begin{tikzpicture}[xscale = 0.5, yscale = 0.5]
+	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
+	\draw[thick] (0,0) grid [step = 2] (2,2);
+	
+	\draw[red] (0,2.125) -- (2,2.125);
+	
+	\begin{scope}[shift={(2.25,0)}]
+		\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
+		\draw[thick] (0,0) grid [step = 2] (2,2);
+		
+		\draw[red] (0,-0.125) -- (2,-0.125);
+	\end{scope}
+\end{tikzpicture}
+\caption{\scriptsize Simple interface.}
+\end{subfigure}
+\begin{subfigure}{0.2\textwidth}
+\centering
+\begin{tikzpicture}[xscale = 0.5, yscale = 0.5]
+	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
+	\draw[thick] (0,0) grid [step = 2] (2,2);
+	
+	\draw[red] (0,2.125) -- (1,2.125);
+	\draw[blue, dashed] (1,2.125) -- (2,2.125);
+	
+	\begin{scope}[shift={(2.25,0)}]
+		\draw[lightgray] (0,0) grid [step = 0.5] (1,2);
+		\draw[thick] (0,0) grid [xstep = 1, ystep=2] (1,2);
+		\draw[red] (0,-0.125) -- (1,-0.125);
+	\end{scope}
+	
+	\begin{scope}[shift={(3.5,0)}]
+		\draw[lightgray] (0,0) grid [step = 0.5] (1,2);
+		\draw[thick] (0,0) grid [xstep = 1, ystep=2] (1,2);
+		\draw[blue, dashed] (0,-0.125) -- (1,-0.125);
+	\end{scope}
+	
+\end{tikzpicture} 
+\caption{\scriptsize T-joint. }
+\end{subfigure}
+\begin{subfigure}{0.4\textwidth}
+\centering
+\tiny
+\begin{tikzpicture}[xscale = 0.5, yscale = 0.5]
+	% grid
+	\foreach \x in {0, ..., 3}{
+		\begin{scope}[shift={(2.75*\x,0)}]
+			\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
+			\draw[thick] (0,0) grid [step = 2] (2,2);
+		\end{scope}
+	}
+	
+	\node at (1,-0.5) {1};
+	\node at (1+2.75,-0.5) {2};
+	\node at (1+2.75*2,-0.5) {3};
+	\node at (1+2.75*3,-0.5) {4};
+	
+	% Xpoint
+	\draw[fill = red, color=red]  (2,0) circle (2pt);
+	\draw[fill = red, color=red]  (2.75,0) circle (2pt);
+	\draw[fill = red, color=red]  (2.75*2,2) circle (2pt);
+	\draw[fill = red, color=red]  (2+2.75*3,2) circle (2pt);
+	
+	% Interfaces
+	\draw[red] (0+2.75,-0.125) -- (2+2.75,-0.125);
+	\draw[red] (0+2.75*2,2.125) -- (2+2.75*2,2.125);
+	
+	\draw[red, dashed] (0,-0.125) -- (2,-0.125);
+	\draw[red, dashed] (0+2.75*3,2.125) -- (2+2.75*3,2.125);
+	
+	\draw[blue] (-0.125+2.75*2,0) -- (-0.125+2.75*2,2);
+	\draw[blue] (2.125+2.75*3,0) -- (2.125+2.75*3,2);
+	
+	\draw[blue, dashed] (2.125,0) -- (2.125,2);
+	\draw[blue, dashed] (-0.125+2.75,0) -- (-0.125+2.75,2);
+	
+	
+\end{tikzpicture}
+%\caption{X-point in logical domain.}
+%\end{subfigure}
+%\begin{subfigure}{0.2\textwidth}
+	\includegraphics[width=3cm]{../images/X_point_in_physical.png}
+\caption{\scriptsize X-point in logical and physical domain.}
+\end{subfigure}
+\caption{\footnotesize \label{Patches_logical_dom} Patches in the logical domain.}
+\end{figure}
+
+
+\end{frame}
+
+
+\begin{frame}{Advection}
+\footnotesize
+\begin{equation}
+\begin{aligned}
+	\partial_t \rho + A\cdot\nabla \rho = 0,
+	\qquad \qquad
+	\partial_t X(t^{n}; t^{n+1}, x)  = A(t, X(t^{n}; t^{n+1}, x)).
+\end{aligned}
+\label{guiding_center_eq}
+\end{equation}
+
+\begin{figure}[!h]
+\centering
+\tiny
+\begin{tikzpicture}[xscale = 0.75, yscale = 0.75]
+	% logical grid 
+	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
+	\draw[thick] (0,0) grid [step = 2] (2,2);
+	\node at (1, -0.25) {$1$};
+	
+	\begin{scope}[xshift=2.25cm]
+		\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
+		\draw[thick] (0,0) grid [step = 2] (2,2);
+		\node at (1, -0.25) {$2$};
+	\end{scope}
+	
+	% feet
+	\draw[fill = red, color=red]  (1.5,1) circle (2pt);
+	\node at (2.87, 0.78) {\color{red} $\times$};
+	
+	\node at (2.87, 0.78+0.4) {2.};
+	
+	\begin{scope}[xshift=6cm]
+		% physical grid
+		\def\RmaxA{1.5}
+		\def\RmaxB{2.7}
+		\foreach \r in {0, 0.3, ...,\RmaxB} {
+		    \draw[lightgray] (0,0) ++(0:\r) arc (0:60:\r);
+		}
+		\foreach \theta in {0, 15, ..., 60} {
+    			\draw[lightgray] (0,0) -- (\theta:\RmaxB);
+		}
+		\node at (0.75, -0.25) {$1$};
+		\node at (2.1, -0.25) {$2$};
+
+
+		\draw[thick, black] (0,0) ++(0:\RmaxA) arc (0:60:\RmaxA);
+		\draw[thick, black] (0,0) ++(0:\RmaxB) arc (0:60:\RmaxB);
+		
+		\draw[thick, black] (0,0) -- (0:\RmaxB);
+		\draw[thick, black] (0,0) -- (60:\RmaxB);
+		
+		% feet
+		\draw[fill = red, color=red]  (1.05,0.58) circle (2pt);
+		\node at (1.75, 0.75) {\color{red} $\times$};
+		
+		\draw[->] (1.05, 0.58-0.25) -- (1.75, 0.75-0.25) node[below right]{1.}; 
+		\draw[<-] (1.05, 0.58+0.25) -- (1.75, 0.75+0.25) node[above right]{3.}; 
+	\end{scope}
+	
+	% legend
+	\begin{scope}[xshift=10cm]	
+		\node[right] at (0,1.5) {1. compute feet.};
+		\node[right] at (0,1) {2. evaluate function (need to  transfer feet to patch 2).};
+		\node[right] at (0,0.5) {3. transfer value to patch 1.};
+	\end{scope}
+\end{tikzpicture}
+\caption{\scriptsize Example of a characteristic foot outside the patch 1 in the logical and physical domains.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\tiny
+\begin{tikzpicture}[xscale = 0.75, yscale = 0.75]
+	% logical domain
+	\draw[lightgray] (0,0) grid [step = 0.2] (2,2);
+	\draw[black] (0,0) grid [step = 2] (2,2);
+	
+	\node at (-0.25, 1) {$\theta$}; 
+	\node at (1, -0.25) {$r$}; 
+	\node at (1,-0.75) {Logical domain} ;
+	
+	\draw[fill = red, color=red]  (1.8,0.2) circle (2pt);
+	
+	% pseudo Cartesian domain
+	\begin{scope}[xshift=5cm, yshift = 1cm]
+		\def\Rmax{1}
+		\foreach \r in {0, 0.1, ...,\Rmax} {
+		    \draw[gray] (0,0) circle (\r);
+		}
+		\foreach \theta in {0, 40,...,360} {
+    			\draw[gray] (0,0) -- (\theta:\Rmax);
+		}
+		
+		\draw[black] (0,0) circle (\Rmax);
+		\draw[black] (0,0) -- (0:\Rmax);
+		
+		\node at (-1.25, 0) {$y'$}; 
+		\node at (0, -1.25) {$x'$}; 
+		\node at (0,-1.75) {Pseudo-Cartesian domain} ; % subtitle
+		
+		\draw[fill = red, color=red]  (40:\Rmax-0.1) circle (2pt);
+		\node at (30:\Rmax+0.2) {\color{red} $\times$};
+		\node at (40:\Rmax+0.5) {$(r,\theta)$?};
+	\end{scope}
+	
+	
+	% physical domain
+	\begin{scope}[xshift=9cm, yshift = 1cm]
+		\def\Rmax{1} 
+		\def\numTheta{10} 
+		\def\a{1} 
+		\def\b{1.25} 
+		
+		\foreach \r in {0,0.1,...,\Rmax} {
+		    \draw[gray] (0,0) ellipse ({\a-\r*(\a/\Rmax)} and {\b-\r*(\b/\Rmax)});
+		}
+		
+		\foreach \theta in {0,40,...,360} {
+			\def\radius{\a*\b / sqrt(\b*\b*cos(\theta)*cos(\theta) + \a*\a*sin(\theta)*sin(\theta))} 
+		    \draw[gray] (0,0) -- (\theta:{\radius});
+		}
+		
+		\draw[black] (0,0) ellipse ({\a} and {\b});
+		
+		\node at (-1.25, 0) {$y$}; 
+		\node at (0, -1.5) {$x$}; 
+		\node at (0,-1.75) {Physical domain} ;
+		
+		\draw[fill = red, color=red]  (40:\Rmax-0.05) circle (2pt);
+		\node at (30:\Rmax+0.2) {\color{red} $\times$};
+		\node at (40:\Rmax+0.5) {$(r,\theta)$?};
+	\end{scope}
+	
+	
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
 \begin{frame}{Solving Poisson with CONGA}
 	We want to solve the Poisson equation
 	\begin{align*}
@@ -189,6 +476,91 @@
 	\end{frame}
 
 
+\begin{frame}{APPENDIX - Structure code}
+\vspace*{0.5cm}
+\centering
+\scriptsize
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{tabular}{|l|}
+	\hline
+	\textbf{\textsc{Global domain class}} \\
+	\hline
+	\textit{Define a global view of the domain.} \\
+	$\bullet$ Reference to each Patch object.\\
+	$\bullet$ Global boundaries (outside boundaries).\\
+	$\bullet$ Reference to Interfaces object.\\
+	$\bullet$ Computation to find the patch \\ where a given coordinate is? \\
+	\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{tabular}{|l|}
+	\hline
+	\textbf{\textsc{Interfaces class}}\\
+	\hline
+	\textit{Define the interfaces between each patches.} \\
+	$\bullet$ Reference to each Patch object.\\
+	$\bullet$ Define interfaces between each patches.\\ 
+	(simple, T-joint, X-point). \\
+	\\
+	\\
+	\hline
+\end{tabular}
+\end{column}
+\end{columns}
+
+\vspace*{0.5cm}
+
+
+\begin{tabular}{|l|}
+	\hline
+	\textbf{\textsc{Patch class}} \\
+	\hline
+	\textit{Define a patch.}\\ 
+	$\bullet$ Dimensions \texttt{DimRi}, \texttt{DimPi}. \\
+	$\bullet$ Discrete domains and spline domains. \\
+	$\bullet$ Local mapping. \\
+	\\
+	\\
+	\hline
+\end{tabular}
+
+
+\end{frame}
+
+\begin{frame}{APPENDIX - Drif-kinetic equations}
+\vspace*{0.5cm}
+\scriptsize
+
+\begin{equation}
+\left\{
+\begin{aligned}
+	&\partial_t f 
+		+ v_{GC}\cdot \nabla_{\perp}f 
+		+ v_{\parallel} \partial_z f 
+		+ \dot{v}_{\parallel} \partial_{v_{\parallel}} f
+		= 0, \\
+	&-\nabla_{\perp} \cdot (\alpha\nabla_{\perp} \phi) + \beta (\phi - \langle\phi\rangle) = n
+\end{aligned}
+\right.
+\end{equation}
+
+\vspace*{0.5cm}
+Advection
+\begin{itemize}
+	\item[$\rightarrow$] multi-patch for space $\perp$ domain, 
+	\item[$\rightarrow$] multi-patch for $z$ domain, 
+	\item[$\rightarrow$] multi-patch for velocity domain.
+\end{itemize}
+
+\vspace*{0.25cm}
+Poisson
+\begin{itemize}
+	\item[$\rightarrow$] similar to 2D0V case.
+\end{itemize}
+\end{frame}
 
 
 
