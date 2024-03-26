@@ -235,6 +235,7 @@ In the guiding center equations example, the advection equation is given by
 \begin{aligned}
 	\partial_t \rho + A\cdot\nabla \rho = 0,
 \end{aligned}
+\label{guiding_center_eq}
 \end{equation}
 
 with $A$ the advection field defined on the logical domain on the physical domain axes. Another example is the advection of the drift-kinetic model 
@@ -247,7 +248,7 @@ with $A$ the advection field defined on the logical domain on the physical domai
 		= 0,
 \end{aligned}
 \end{equation}
-but it seems to raise the same questions as the guiding center equations.
+but it seems that the multi-patch problems are similar as in the case of the guiding center equations and so we focus on \eqref{guiding_center_eq} only.
 
 
 \paragraph{Computing the advection field.}
