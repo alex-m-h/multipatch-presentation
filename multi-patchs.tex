@@ -6,8 +6,8 @@
 
 \section{Structure for multipatch}
 \paragraph{}
+We are trying here to answer to the following questions: 
 \begin{itemize}
-	\item What should be done before September?
 	\item What kind of information do we need to store in each patch? 
 	\item What kind of information do the patches need to exchange? 
 \end{itemize}
@@ -15,30 +15,55 @@
 
 \subsection{Type of global space splitting}
 \paragraph{}
+The splitting of the global space into patches is currently not fixed. However we can encounter three types of sticking: 
+\begin{itemize}
+	\item simple interface which sticks two whole edges together; 
+	\item T-joint which sticks several edges to one edge of a patch; 
+	\item X-point where the sticking is only on one point. 
+\end{itemize}
+
+\paragraph{}
+Each patch is defined on a logical domain and maps the mesh points to a physical domain (cf. Fig. \ref{log_phy_domain}). 
+The figure Fig. \ref{Patches_logical_dom} gives examples of the different stickings on the logical domain. 
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}[xscale = 1, yscale = 1]
+	% logical grid
+	\draw[lightgray] (0,0) grid [step = 0.5] (3,3);
+	\draw[thick] (0,0) grid [step = 3] (3,3);
+	
+	\node at (-0.25, 1.5) {$\theta$}; 
+	\node at (1.5, -0.25) {$r$}; 
+	
+	% mapping
+	\draw[->] (3.5, 1.5) -- (5.5, 1.5); 
+	\node at (4.5,1.75) {$\mathcal{F}:(r,\theta)\mapsto(x,y)$}; 
+	
+	\begin{scope}[xshift = 7.75cm, yshift = 1.5cm]	
+		% physical grid
+		\def\Rmax{1.5}
+		\foreach \r in {0, 0.1, ...,\Rmax} {
+		    \draw[gray] (0,0) circle (\r);
+		}
+		\foreach \theta in {0, 40,...,360} {
+    			\draw[gray] (0,0) -- (\theta:\Rmax);
+		}
+		
+		\draw[black] (0,0) circle (\Rmax);
+		\draw[black] (0,0) -- (0:\Rmax);
+		
+		\node at (-1.75, 0) {$y$}; 
+		\node at (0, -1.75) {$x$}; 
+	\end{scope}
+\end{tikzpicture}
+\caption{\label{log_phy_domain} Mapping from the logical domain to the physical domain. Example with a circular mapping.}
+\end{figure}
 
 \begin{figure}[!h]
 \begin{subfigure}{0.5\textwidth}
 \centering
 \begin{tikzpicture}[xscale = 1, yscale = 1]
-%	\draw[->] (-4.25,0) -- (4.25,0);
-%	\foreach \x in {-4, 0, 4}{
-%		\draw[] (\x, +2pt) -- (\x,-2pt); 
-%	}
-%	\draw[] (-4, +2pt) -- (-4,-2pt) node[below]{$x_{i-1}$};
-%	\draw[] (0, +2pt) -- (0,-2pt) node[below]{$x_{i}$};
-%	\draw[] (4, +2pt) -- (4,-2pt) node[below]{$x_{i+1}$};
-%	
-%	\node at (-4,0.5) {$s(x_{i-1})$};
-%	\node at (0,0.5) {$s(x_{i})$};
-%	\node at (4,0.5) {$s(x_{i+1})$};
-%	
-%	\node at (-4,1) {$s'(x_{i-1})$};
-%	\node at (0,1) {$s'(x_{i-1})$};
-%	\node at (4,1) {$s'(x_{i-1})$};
-%	
-%	\node at (-2,1.5) {$P_{-}$};
-%	\node at (2,1.5) {$P_{+}$};
-
 	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
 	\draw[thick] (0,0) grid [step = 2] (2,2);
 	
@@ -121,14 +146,19 @@
 	\includegraphics[width=0.4\textwidth]{images/X_point_in_physical.png}
 \caption{X-point in logical and physical domain.}
 \end{subfigure}
-\caption{Patches in the logical domain.}
+\caption{\label{Patches_logical_dom} Patches in the logical domain.}
 \end{figure}
 
+\newpage
+
+\paragraph{}
+We want to stay general here and not to focus on one specific decomposition of the domain into patches. The figures Fig. \ref{Complex_geometry_1} and \ref{Complex_geometry_2} give examples of more complex spaces. These are not necessarily for the decomposition of the separatrix.
 
 \begin{figure*}
 	\centering
 	\includegraphics*[width=0.8\textwidth]{images/5patches_sketch.jpg}
-	\caption{Simple sketch of more complicated geometry with X-point (cyan point). 
+	\caption{\label{Complex_geometry_1}
+	          Simple sketch of more complicated geometry with X-point (cyan point). 
 			  Physical edges and corners are identified on the logical patches.
 			  This illustrates the idea how we intend to represent the multipatch geometry 
 			  using tensor-product patches.}
@@ -137,7 +167,8 @@
 \begin{figure*}
 	\centering
 	\includegraphics*[width=0.8\textwidth]{images/T-joint_sketch.jpg}
-	\caption{Quick sketch of geometry with O-point (purple point) and T-joint (cyan point).
+	\caption{\label{Complex_geometry_2}
+			  Quick sketch of geometry with O-point (purple point) and T-joint (cyan point).
 			  There is a T-joint at the cyan point because 
 			  edges from patch {\uppercase\expandafter{\romannumeral 2}}
 			  and {\uppercase\expandafter{\romannumeral 3}} are connected to the eastern edge
@@ -145,18 +176,34 @@
 			  Note that the y-dimension of patch {\uppercase\expandafter{\romannumeral 1}}
 			  is periodic.}
 \end{figure*}
+
 \newpage
 
+
 \section{Advection equation}
+\paragraph{}
+We focus on the advection and Poisson equation separately in the context of the questions raised in the introduction. We start with the advection equation. 
+
 \paragraph{}
 In the guiding center equations example, the advection equation is given by 
 \begin{equation}
 \begin{aligned}
 	\partial_t \rho + A\cdot\nabla \rho = 0,
 \end{aligned}
+\label{guiding_center_eq}
 \end{equation}
 
-with $A$ the advection field defined on the logical domain on the physical domain axis. 
+with $A$ the advection field defined on the logical domain on the physical domain axes ($A(r,\theta) = [A_x (r,\theta), A_y(r,\theta)]$). Another example is the advection of the drift-kinetic model 
+\begin{equation}
+\begin{aligned}
+	\partial_t f 
+		+ v_{GC}\cdot \nabla_{\perp}f 
+		+ v_{\parallel} \partial_z f 
+		+ \dot{v}_{\parallel} \partial_{v_{\parallel}} f
+		= 0,
+\end{aligned}
+\end{equation}
+but it seems that the multi-patch problems are similar as in the case of the guiding center equations and so we focus on \eqref{guiding_center_eq} only.
 
 
 \paragraph{Computing the advection field.}
@@ -189,6 +236,8 @@ The equation to solve is
 \end{aligned}
 \right.
 \end{equation}
+
+
 we compute 
 \begin{equation}
 \left\{
@@ -198,6 +247,7 @@ we compute
 \end{aligned}
 \right.
 \end{equation}
+
 where $\bar{\psi}$ is a discrete flow computed with
 a time integration method. In the case of Runge-Kutta method, the advection field needs to be evaluated at intermediate feet.
 
@@ -218,17 +268,63 @@ The same problem appears when we have solved the characteristic equation and wan
 \begin{figure}[!h]
 \centering
 \begin{tikzpicture}[xscale = 1, yscale = 1]
-	\draw[lightgray] (0,0) grid [step = 0.5] (4,2);
-	\draw[thick] (0,0) grid [step = 2] (4,2);
+	% logical grid 
+	\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
+	\draw[thick] (0,0) grid [step = 2] (2,2);
+	\node at (1, -0.25) {$1$};
 	
+	\begin{scope}[xshift=2.25cm]
+		\draw[lightgray] (0,0) grid [step = 0.5] (2,2);
+		\draw[thick] (0,0) grid [step = 2] (2,2);
+		\node at (1, -0.25) {$2$};
+	\end{scope}
+	
+	% feet
 	\draw[fill = red, color=red]  (1.5,1) circle (2pt);
+	\node at (2.87, 0.78) {\color{red} $\times$};
 	
-	\node at (2.78, 0.78) {\color{red} $\times$};
+	%\draw[dashed, gray, ->] (1.5, 0.75) -- (2.87, 0.53) node[below]{feet}; 
+	%\draw[dashed, gray, <-] (1.5, 1.25) -- (2.87, 1.02) node[above]{value}; 
 	
-	\draw[->] (1.5, 0.75) -- (2.78, 0.53) node[below]{feet}; 
-	\draw[<-] (1.5, 1.25) -- (2.78, 1.02) node[above]{value}; 
+	\node at (2.87, 0.78+0.4) {2.};
+	
+	
+	\begin{scope}[xshift=6cm]
+		% physical grid
+		\def\RmaxA{1.5}
+		\def\RmaxB{2.7}
+		\foreach \r in {0, 0.3, ...,\RmaxB} {
+		    \draw[lightgray] (0,0) ++(0:\r) arc (0:60:\r);
+		}
+		\foreach \theta in {0, 15, ..., 60} {
+    			\draw[lightgray] (0,0) -- (\theta:\RmaxB);
+		}
+		\node at (0.75, -0.25) {$1$};
+		\node at (2.1, -0.25) {$2$};
+
+
+		\draw[thick, black] (0,0) ++(0:\RmaxA) arc (0:60:\RmaxA);
+		\draw[thick, black] (0,0) ++(0:\RmaxB) arc (0:60:\RmaxB);
+		
+		\draw[thick, black] (0,0) -- (0:\RmaxB);
+		\draw[thick, black] (0,0) -- (60:\RmaxB);
+		
+		% feet
+		\draw[fill = red, color=red]  (1.05,0.58) circle (2pt);
+		\node at (1.75, 0.75) {\color{red} $\times$};
+		
+		\draw[->] (1.05, 0.58-0.25) -- (1.75, 0.75-0.25) node[below right]{1.}; 
+		\draw[<-] (1.05, 0.58+0.25) -- (1.75, 0.75+0.25) node[above right]{3.}; 
+	\end{scope}
+	
+	% legend
+	\begin{scope}[xshift=10cm]	
+		\node[right] at (0,1.5) {1. compute feet.};
+		\node[right] at (0,1) {2. evaluate function.};
+		\node[right] at (0,0.5) {3. transfer value.};
+	\end{scope}
 \end{tikzpicture}
-\caption{Feet outside the patch in the physical domain.}
+\caption{Example of a characteristic foot outside the patch 1 in the logical and physical domains.}
 \end{figure}
 
 \begin{center}
@@ -246,11 +342,11 @@ The same problem appears when we have solved the characteristic equation and wan
 \end{center}
 
 \paragraph{Further questions on outside feet.}
-Problem: The mapping from the logical to the physical domain can be costly to invert. 
+Problem: the mapping from the logical to the physical domain is not always easily invertible. 
 
 \begin{itemize}
 	\item For an advection in the physical domain, if the feet is outside of the domain, how to get the feet in the logical domain of another patch 
-			(inverting the mapping for the other patch might be costly)?
+	(inverting the mapping for the other patch might be costly)?
 	\item For an advection in the pseudo-Cartesian domain, if the feet is outside of the domain, what are the equivalent coordinate in the physical domain? 
 \end{itemize}
 
@@ -273,8 +369,8 @@ physical coordinates in certain situations is the best approach?
 \centering
 \begin{tikzpicture}[xscale = 2, yscale = 2]
     \draw (0,0) grid[step=0.1] (1.5,1.5);
-    \draw (0.03,0) -- (0.03,1.5);
-    \draw (1.47,0) -- (1.47,1.5);
+    %\draw (0.03,0) -- (0.03,1.5);
+    %\draw (1.47,0) -- (1.47,1.5);
     \draw (0.75,0) node[below]{$r$};
     \draw (0,0.75) node[left]{$\theta$};
 \end{tikzpicture}
@@ -286,7 +382,7 @@ physical coordinates in certain situations is the best approach?
 	\foreach \r in {0, 0.1, 0.2, ..., 1.5}
 		{\draw (0,0) circle (\r);}
 	\draw (0,0) circle (0.03);
-	\draw (0,0) circle (1.47);
+%	\draw (0,0) circle (1.47);
 	
 	\draw (0,0) -- (1.5*1,        1.5*0);
 	\draw (0,0) -- (1.5*0.80902,  1.5*0.58779);
@@ -315,6 +411,82 @@ physical coordinates in certain situations is the best approach?
 \end{subfigure}
 \end{figure}
 
+
+\begin{itemize}
+	\item How to communicate the feet and values from a patch to another? 
+\end{itemize}
+
+Two ideas: 
+\begin{enumerate}
+	\item Communicate the feet to a global space class; 
+		compute in which patch the feet are; 
+		evaluate the function at the feet in the right patch; 
+		communicate the feet to a global space class to redistribute the values to the first patch.
+		
+	\item Add some ghost cells around each patch ; update the function values at each every time they change.
+\end{enumerate}
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}[xscale = 1, yscale = 1]
+	% logical grid 
+	\draw[blue] (2,0) grid [step = 0.25] (2.5,2);
+	%\draw[color=white, fill=white] (0,0) -- (0,2) -- (2,2) -- (2,0) -- (0, 0) --cycle;
+	\draw[lightgray] (0,0) grid [step = 0.25] (2,2);
+	\draw[thick] (0,0) grid [step = 2] (2,2);
+	\node at (1, -0.25) {$1$};
+	
+	\begin{scope}[xshift=3.25cm]
+		\draw[red] (-0.5,0) grid [step = 0.25] (0,2);
+		\draw[lightgray] (0,0) grid [step = 0.25] (2,2);
+		\draw[thick] (0,0) grid [step = 2] (2,2);
+		\node at (1, -0.25) {$2$};
+	\end{scope}	
+	
+	\begin{scope}[xshift=7cm]
+		% physical grid
+		\def\RmaxA{1.5}
+		\def\RmaxB{2.7}
+		\foreach \r in {0, 0.15, ...,\RmaxB} {
+		    \draw[lightgray] (0,0) ++(0:\r) arc (0:60:\r);
+		}
+		\foreach \theta in {0, 7.5, ..., 60} {
+    			\draw[lightgray] (0,0) -- (\theta:\RmaxB);
+		}
+		\node at (0.75, -0.25) {$1$};
+		\node at (2.1, -0.25) {$2$};
+		
+		% ghost cells
+		\foreach \r in {\RmaxA-0.3, \RmaxA-0.15, \RmaxA} {
+		    \draw[red] (0,0) ++(0:\r) arc (0:60:\r);
+		}
+		\foreach \theta in {0, 7.5, ..., 60} {
+    			\draw[red] (\theta:\RmaxA-0.3) -- (\theta:\RmaxA);
+		}
+		
+		\foreach \r in {\RmaxA, \RmaxA+0.15, \RmaxA+0.3} {
+		    \draw[blue] (0,0) ++(0:\r) arc (0:60:\r);
+		}
+		\foreach \theta in {0, 7.5, ..., 60} {
+    			\draw[blue] (\theta:\RmaxA) -- (\theta:\RmaxA+0.3);
+		}
+
+
+		\draw[thick, black] (0,0) ++(0:\RmaxA) arc (0:60:\RmaxA);
+		\draw[thick, black] (0,0) ++(0:\RmaxB) arc (0:60:\RmaxB);
+		
+		\draw[thick, black] (0,0) -- (0:\RmaxB);
+		\draw[thick, black] (0,0) -- (60:\RmaxB);
+	\end{scope}
+	
+\end{tikzpicture}
+\caption{Ghost cells for the previous example.}
+\end{figure}
+
+
+For the ghost cells option, we need to know in advance what will be the maximal advection length to not land outside of the ghost cells zone. (Is this length known?) To update the values in the ghost cells, we also need to evaluate the function on the mesh points of the ghost cells of other patches (the mesh points won't always coincide between two patches, especially if we want one more refined than the other). 
+
+For the first option, we need to compute in which patch the feet are (which can be non-trivial).
 
 
 
@@ -360,7 +532,7 @@ To do it, we
 	\item Let's assume we know in which patch we are, how can we evaluate a function? 
 			How can we get $\rho(x,y)$ with $(x,y)$ in the physical domain 
 			(especially when the mapping difficult to invert)?
-\end{itemize}
+	\end{itemize}
 
 
 
