@@ -1,0 +1,263 @@
+%% This is file `beamerinnerthemeIPP.sty' version 2.6 (2023/03/21),
+%% it is part of IPP-bundle
+%% Beamer-slides and tcolorbox-posters for IPP
+%% ----------------------------------------------------------------------------
+%%
+%%  Copyright (C) 2020–2023 by Marei Peischl <marei@peitex.de>
+%%
+%% ============================================================================
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%% http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008/05/04 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%%
+%% Thecurrent maintainer of this work is
+%%   Marei Peischl <marei@peitex.de>
+%%
+%% ============================================================================
+%%
+\def\fileversion{v2.3}
+\def\filedate{2022/08/05}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerinnerthemeIPP}
+ [\filedate\space\fileversion]
+
+\RequirePackage{expl3}
+%
+\mode<presentation>
+
+
+
+
+\RequirePackage{trimclip}
+\ExplSyntaxOn
+
+
+\dim_if_exist:NF \c_ptxcd_grid_dim {\dim_const:Nn \c_ptxcd_grid_dim {0.025\paperwidth}}
+\dim_if_exist:NF \c_ptxcd_logoheight_dim  {\dim_const:Nn \c_ptxcd_logoheight_dim {.11\paperheight}}
+
+\pgfdeclareimage[height=\c_ptxcd_logoheight_dim]{ipp_text}{img/MPI_PP_Logo_Wide-green}
+
+\box_new:N \l_ptxcd_titlegraphic_box
+
+\dim_new:N \l_ptxcd_titlegraphic_ht_dim
+
+\RequirePackage{xparse}
+
+\RenewDocumentCommand{\titlegraphic}{sm}{
+	\IfBooleanTF{#1}{
+		\def\inserttitlegraphic{#2}
+	}{
+		\def\inserttitlegraphic{
+			\hbox_set:Nn \l_ptxcd_titlegraphic_box {\raisebox{\depth}{#2}}
+			\box_resize_to_wd:Nn \l_ptxcd_titlegraphic_box {\width}
+			\dim_compare:nTF {\box_ht:N \l_ptxcd_titlegraphic_box - \height > \c_zero_dim}
+			{
+				\dim_set:Nn \l_tmpa_dim {(\box_ht:N \l_ptxcd_titlegraphic_box - \height)/2}
+				\clipbox{0pt~\dim_eval:n{\l_tmpa_dim}~0pt~\dim_eval:n{\l_tmpa_dim}}{\box_use:N \l_ptxcd_titlegraphic_box}
+			}{
+				\box_resize_to_ht:Nn \l_ptxcd_titlegraphic_box {\height}
+				\dim_set:Nn \l_tmpa_dim {(\box_wd:N \l_ptxcd_titlegraphic_box - \width) / 2}
+				\clipbox{\dim_eval:n{\l_tmpa_dim}~0pt~\dim_eval:n{\l_tmpa_dim}~0pt}{\box_use:N \l_ptxcd_titlegraphic_box}
+			}
+		}
+	}
+}
+
+%\ExplSyntaxOff
+
+\newlength{\IPP@titlebox@ht}
+\setlength{\IPP@titlebox@ht}{\dimexpr\paperheight-.75cm}
+
+\let\beamer@andinst\quad
+%title page setup
+\defbeamertemplate*{title~page}{IPP}[1][]{
+	\nointerlineskip
+	\skip_vertical:n {-\beamer@frametopskip+.5\c_ptxcd_logoheight_dim-.5pt}
+	\leavevmode
+	\rlap{
+		\raisebox{\dimexpr-\height-3.2\c_ptxcd_grid_dim}[0pt][0pt]{
+			\includegraphics[height=7\c_ptxcd_grid_dim,angle=180]{dots_rgb_light_\bool_if:NTF \g_ptxcd_titlegraphic_bool {blue} {green}}
+		}
+	}
+	\rlap{
+			\raisebox{\dimexpr-\height-12.3\c_ptxcd_grid_dim}[0pt][0pt]{
+				\makebox[37\c_ptxcd_grid_dim][r]{
+					\includegraphics[height=7\c_ptxcd_grid_dim]{dots_rgb_light_\bool_if:NTF \g_ptxcd_titlegraphic_bool {blue} {green}}
+			}
+		}
+	}
+	\par\nointerlineskip\vspace{.15\c_ptxcd_logoheight_dim}
+	\hspace*{\fill}\pgfuseimage{ipp_text}\hspace*{-.5\c_ptxcd_grid_dim}
+	\par\vspace{\dimexpr.35\c_ptxcd_logoheight_dim+\c_ptxcd_grid_dim}
+	\hspace*{\dim_eval:n {3\c_ptxcd_grid_dim-1\beamer@leftmargin}}%
+	\begin{beamercolorbox}[colsep=.5\c_ptxcd_grid_dim,wd=.85\paperwidth,vmode,#1,]{title}
+		\vbox_to_ht:nn {\dim_eval:n {\bool_if:NTF \g_ptxcd_titlegraphic_bool  {11} {12}\c_ptxcd_grid_dim}} {
+		\raisebox{\dimexpr-\height+\box_ht:N \g__ptxcd_title_subinst_box-.5\c_ptxcd_grid_dim}
+			[\box_ht:N \g__ptxcd_title_subinst_box]
+			{
+		\parbox{\dimexpr-2\beamer@colbox@sep+\linewidth-1ex-\box_wd:N \g__ptxcd_title_subinst_box}{
+		\raggedright
+		\usebeamerfont{title}\inserttitle\par%
+		\ifx\insertsubtitle\@empty%
+		\else%
+		{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+		\fi%    
+		}}
+		\hfill
+		\box_use:N \g__ptxcd_title_subinst_box
+		\vskip1em%
+		\par
+		\parbox{\dim_eval:n {\tl_if_empty:NTF \g_ptxcd_titlegraphic_tl {33} {17}\c_ptxcd_grid_dim}}{
+		\raggedright
+		\ifx\insertauthor\@empty%
+		\else%
+		{\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+		\fi%
+		\par\vskip.5ex
+		\ifx\insertinstitute\@empty%
+		\else%
+		{\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par}%
+		\fi%
+		\par
+		}
+		\vfill
+		}
+	\end{beamercolorbox}
+	\IPP_setup_titlegraphic:
+	\ifx\inserttitlegraphic\@empty
+	\else
+	\begingroup
+	\raisebox{-\c_ptxcd_grid_dim}[0pt][0pt]{\makebox[\z@][r]{\usebeamercolor[fg]{titlegraphic}%
+		\def\width{16\c_ptxcd_grid_dim}%
+		\def\height{7\c_ptxcd_grid_dim}%
+		\inserttitlegraphic\skip_horizontal:n {-\c_ptxcd_grid_dim}}
+	}\par
+	\endgroup
+	\fi
+	\par
+	\vfill
+	\raisebox{\dimexpr-\height+.4\c_ptxcd_grid_dim}{\usebeamertemplate{logos~on~title~page}}
+}
+
+
+\defbeamertemplate*{logos~on~title~page}{IPP}{
+\begin{beamercolorbox}[
+	leftskip=\c_ptxcd_grid_dim,
+	rightskip=\c_ptxcd_grid_dim,
+	]{logos~on~title~page}
+	\if@IPP@eurofusion
+	\usebeamertemplate{eurofusion~info}	\hspace{.5ex}
+	\fi
+	\ifx\insertlogo\@empty
+	\else
+	\def\height{\dim_eval:n {.5\c_ptxcd_logoheight_dim}}
+	\def\and{\quad}
+	\raisebox{-.5\height}[0pt][0pt]{\insertlogo}
+	\fi
+	\vskip.5em
+\end{beamercolorbox}
+}
+
+\ExplSyntaxOff
+
+\def\beamer@andtitle{\\}
+
+\newcommand*{\EUROfusionInfo}{
+	This work has been carried out within the framework of the EUROfusion
+	Consortium, funded by the European Union via the Euratom Research and
+	Training Programme (Grant Agreement No 101052200 — EUROfusion). Views and
+	opinions expressed are however those of the author(s) only and do not
+	necessarily reflect those of the European Union or the European Commission.
+	Neither the European Union nor the European Commission can be held
+	responsible for them.
+}
+
+\ExplSyntaxOn
+\defbeamertemplate*{eurofusion~info}{IPP}{
+	\begingroup
+	\usebeamerfont{eurofusion~info}
+	\hbox_set:Nn \l_tmpa_box {
+	\raisebox{\dimexpr-.5\height}{\includegraphics[height=4\baselineskip]{EUROfusion_rgb}}\qquad
+	\raisebox{\dimexpr-.5\height}{\includegraphics[height=4\baselineskip]{EU-emblem_rgb}}
+	}
+	\leavevmode\raisebox{\dimexpr-.5\height+.5\depth}{\box_use:N \l_tmpa_box}\qquad%
+	\raisebox{\dimexpr-.5\height+.5\depth}{
+	\parbox{\dim_eval:n {19\c_ptxcd_grid_dim - \box_wd:N \l_tmpa_box-3em}}{
+	\EUROfusionInfo
+	}}
+	\endgroup%
+%	\vskip1em
+}
+\ExplSyntaxOff
+
+
+\defbeamertemplate{itemize item}{IPP@smallcircle}{
+	\usebeamerfont*{itemize item}\raise.25\ht\strutbox\hbox{\tiny\donotcoloroutermaths$\bullet$}%
+}
+\defbeamertemplate{itemize subitem}{IPP@smallcircle}{
+	\usebeamerfont*{itemize subitem}\raise.25\ht\strutbox\hbox{\tiny\donotcoloroutermaths$\bullet$}%
+}
+\defbeamertemplate{itemize subsubitem}{IPP@smallcircle}{
+	\usebeamerfont*{itemize subsubitem}\raise.25\ht\strutbox\hbox{\tiny\donotcoloroutermaths$\bullet$}%
+}
+
+\setbeamertemplate{itemize items}[IPP@smallcircle]
+
+\defbeamertemplate*{block alerted begin}{IPP}
+{
+	\par\vskip\medskipamount%
+	\begin{beamercolorbox}[
+		wd=\linewidth,
+		sep=1.5pt,
+		]{block frame alerted}
+		\ifx\insertblocktitle\@empty
+		\else
+		\begin{beamercolorbox}[wd={\dimexpr\linewidth-3pt},colsep=.75ex]{block title alerted}
+			\usebeamerfont*{block title alerted}\insertblocktitle%
+		\end{beamercolorbox}%
+		\vskip.5pt
+		\par\nointerlineskip
+		\fi
+		\leavevmode
+		\usebeamerfont{block body alerted}%
+		\begin{beamercolorbox}[wd={\dimexpr\linewidth-3pt},colsep=.75ex]{block body alerted}%
+		}
+
+\defbeamertemplate*{block alerted end}{IPP}
+	{\end{beamercolorbox}\end{beamercolorbox}\vskip\smallskipamount}
+
+
+\defbeamertemplate*{block example begin}{IPP}
+{
+	\par\vskip\medskipamount%
+	\begin{beamercolorbox}[
+		wd=\linewidth,
+		sep=1.5pt,
+		]{block frame example}
+		\ifx\insertblocktitle\@empty
+		\else
+		\begin{beamercolorbox}[wd={\dimexpr\linewidth-3pt},colsep=.75ex]{block title example}
+			\usebeamerfont*{block title example}\insertblocktitle%
+		\end{beamercolorbox}%
+		\vskip.5pt
+		\par\nointerlineskip
+		\fi
+		\leavevmode
+		\usebeamerfont{block body example}%
+		\begin{beamercolorbox}[wd={\dimexpr\linewidth-3pt},colsep=.75ex]{block body example}%
+}
+
+\defbeamertemplate*{block example end}{IPP}
+		{\end{beamercolorbox}\end{beamercolorbox}\vskip\smallskipamount}
+
+
+\mode<all>
+
+\endinput
+

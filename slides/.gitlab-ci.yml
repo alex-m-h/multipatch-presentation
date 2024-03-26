@@ -1,0 +1,27 @@
+default:
+  image: texlive/texlive:latest
+  before_script:
+   - apt update
+   - apt -y install zip
+
+build:
+  script:
+   # prepare portable demo bundle
+   - "mkdir -p ipp-latex-demo"
+   - "latexmk --lualatex"
+   - "cp -r *.sty *.cls img *.tex *.bib *.pdf README.md ipp-latex-demo/."
+   - "zip -ll -y -r ipp-latex-demo_$CI_COMMIT_TAG.zip ipp-latex-demo"
+
+   # prepare tds-local  install bundle
+   #remove graphicspath modification
+   - "sed  -i 's\\#\\graphicspath{.*}\\#\\#;s\\#\\% extended graphicspath.*\\#\\#' *.tex"
+   - "mkdir -p ipp-local.tds/doc/latex/local/ipp"
+   - "mkdir -p ipp-local.tds/tex/latex/local/ipp"
+   - "cp -r *.sty *.cls img ipp-local.tds/tex/latex/local/ipp/."
+   - "cp *.pdf *.tex README.md *.bib ipp-local.tds/doc/latex/local/ipp/."
+   - "cp INSTALL.md ipp-local.tds/."
+   - "zip -ll -y -r ipp-local_$CI_COMMIT_TAG.tds.zip ipp-local.tds/*"
+
+  artifacts:
+    paths:
+      - "*.zip"

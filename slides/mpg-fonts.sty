@@ -1,0 +1,51 @@
+\ProvidesExplPackage{mpg-fonts}{2022/06/10}{1.0}{font setup for CI of Max-Planck-Gesellschaft}
+
+\newif\ifMPG@Arial
+\keys_define:nn {ptxcd} {
+	arial .bool_gset:N = \g__ptxcd_arial_bool,
+	roboto .bool_gset_inverse:N = \g__ptxcd_arial_bool,
+	arial .initial:n = true,
+}
+
+%backwards compat for TL < 2020/10
+\providecommand\IfFormatAtLeastTF{\@ifl@t@r\fmtversion}
+% backwards compat for TL < 2022/06
+\IfFormatAtLeastTF { 2022-06-01 }
+{ \ProcessKeyOptions [ ptxcd ] }
+{
+	\RequirePackage { l3keys2e }
+	\ProcessKeysOptions { ptxcd }
+}
+
+\RequirePackage{anyfontsize}
+\RequirePackage{iftex}
+
+\bool_if:NTF \g__ptxcd_arial_bool {
+	\ifPDFTeX
+		\RequirePackage{tgheros}
+		\RequirePackage[T1]{fontenc}
+		\newcommand*{\IPP@headerfont}{\fontfamily{qhvc}\selectfont}
+	\else
+		\RequirePackage{fontspec}
+		\fontspec_font_if_exist:nTF {Arial} {
+			\setsansfont{Arial}
+		}{
+			\setsansfont{TeX Gyre Heros}
+		}
+		\fontspec_font_if_exist:nTF {ArialNarrow} {
+			\newfontfamily\IPP@headerfont{ArialNarrow}[
+			BoldFont = ArialNarrow-Bold,
+			ItalicFont = ArialNarrow-Italic,
+			BoldItalicFont = ArialNarrow-BoldItalic,
+			]
+		} {
+			\newfontfamily\IPP@headerfont{texgyreheroscn}
+		}
+	\fi
+} {
+	\RequirePackage{roboto}
+}
+
+\renewcommand*{\familydefault}{\sfdefault}
+
+\endinput

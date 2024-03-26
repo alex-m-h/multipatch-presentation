@@ -1,0 +1,135 @@
+%% This is file `beamerouterthemeIPP.sty' version 2.6 (2023/03/21),
+%% it is part of IPP-bundle
+%% Beamer-slides and tcolorbox-posters for IPP
+%% ----------------------------------------------------------------------------
+%%
+%%  Copyright (C) 2020–2023 by Marei Peischl <marei@peitex.de>
+%%
+%% ============================================================================
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%% http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008/05/04 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%%
+%% Thecurrent maintainer of this work is
+%%   Marei Peischl <marei@peitex.de>
+%%
+%% ============================================================================
+%%
+\def\fileversion{v2.3}
+\def\filedate{2022/08/05}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerouterthemeIPP}
+[\filedate\space\fileversion]
+
+\mode<presentation>
+
+\ExplSyntaxOn
+\dim_if_exist:NF \c_ptxcd_grid_dim {\dim_const:Nn \c_ptxcd_grid_dim {0.025\paperwidth}}
+\dim_if_exist:NF \c_ptxcd_logoheight_dim  {\dim_const:Nn \c_ptxcd_logoheight_dim {.11\paperheight}}
+
+\setbeamersize{
+	text~margin~left=2\c_ptxcd_grid_dim,
+	text~margin~right=2\c_ptxcd_grid_dim,
+}
+\ExplSyntaxOff
+
+\RequirePackage{microtype}
+
+
+\defbeamertemplate*{footline sep}{IPP}{%
+	\enspace\rule{.5pt}{\ht\strutbox}\enspace%
+}
+\ExplSyntaxOn
+
+\defbeamertemplate*{sidebar~right}{IPP}{}
+
+\defbeamertemplate*{footline}{IPP}
+{
+	\nointerlineskip
+	\begin{beamercolorbox}[
+		leftskip=3\c_ptxcd_grid_dim,
+		rightskip=3\c_ptxcd_grid_dim,
+		]{footline}%
+		%modification for uppercase elements:
+		\renewcommand{\beamer@setupshort}[1]{%
+			\def\beamer@ststart########1\beamer@stend{\text_uppercase:n {########1}}%
+			\setkeys{beamerst}{####1}
+		}%
+		\bool_set_false:N \l_tmpa_bool
+		\textls[160]{
+		% \tl_if_empty:NF \insertshortinstitute {
+		% 	\insertshortinstitute
+		% 	\bool_set_true:N \l_tmpa_bool
+		% }
+		% \tl_if_empty:NF \insertshortauthor {
+		% 	\bool_if:NTF \l_tmpa_bool
+		% 	{\usebeamertemplate{footline~sep}}
+		% 	{\bool_set_true:N \l_tmpa_bool}
+		% 	\insertshortauthor
+		% }
+		\tl_if_empty:NF \insertshortdate {
+			\bool_if:NTF \l_tmpa_bool
+				{\usebeamertemplate{footline~sep}}
+				{\bool_set_true:N \l_tmpa_bool}
+			\insertshortdate
+		}
+		\hfill
+		\tl_if_empty:NF \insertshorttitle {
+			\insertshorttitle
+		}
+		\usebeamerfont{number~in~head/foot}%
+		\makebox[3\baselineskip][r]{\insertframenumber}
+		}%
+		\vspace*{.5\c_ptxcd_grid_dim}
+	\end{beamercolorbox}
+}
+
+
+\defbeamertemplate{headline}{IPP}{}
+
+\newsavebox\IPP@frametitlebox
+%Slightly  adjusted variant of frametitle from beamerthemedefault.sty
+\defbeamertemplate*{frametitle}{IPP}[1][left]
+{%
+	\ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+%	\nointerlineskip
+	\skip_vertical:n {-\beamer@frametopskip+.25\c_ptxcd_grid_dim}
+	\rlap{\raisebox{\dimexpr-\height+\dp\strutbox}[0pt][0pt]{\makebox[\linewidth][r]{
+				\raisebox{\dim_eval:n {+.5\depth -.5\height + \c_ptxcd_grid_dim}}{\box_use:N \g__ptxcd_headline_subinst_box}
+				\hspace{1ex}
+				\pgfuseimage{ipp_logo}
+				\hspace*{\dimexpr-\beamer@rightmargin+.5\c_ptxcd_grid_dim}
+	}}}%
+	\par
+	\nointerlineskip\vspace{\dimexpr.45\c_ptxcd_logoheight_dim-\dp\strutbox}
+	\begin{beamercolorbox}[vmode,#1,wd=\textwidth]{frametitle}%
+		\usebeamerfont{frametitle}%\strut%
+		\setbox\IPP@frametitlebox\hbox{\insertframetitle}%
+		\ifdim\wd\IPP@frametitlebox>\dimexpr.9\linewidth-\box_wd:N \g__ptxcd_headline_subinst_box\relax%
+		\parbox{\dimexpr.9\linewidth-\box_wd:N \g__ptxcd_headline_subinst_box}{
+				\usebeamerfont{smaller~frametitle}
+				\insertframetitle}
+		\else%
+		\leavevmode\usebox\IPP@frametitlebox%
+		\fi%
+%		\vskip-.5ex%
+		\if@tempswa\else\vskip-.3cm\fi% set inside beamercolorbox... evil here...
+	\end{beamercolorbox}%
+%	\vskip.3cm%
+	\skip_vertical:n {.6\c_ptxcd_grid_dim+\dp\strutbox}
+}
+
+\pgfdeclareimage[height=2\c_ptxcd_grid_dim]{ipp_logo}{img/MPG_RGB-green_minerva}
+\ExplSyntaxOff
+
+
+\mode
+<all>
+
+\endinput
