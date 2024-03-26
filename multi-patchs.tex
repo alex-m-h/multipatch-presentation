@@ -8,7 +8,6 @@
 \paragraph{}
 We are trying here to answer to the following questions: 
 \begin{itemize}
-	\item What should be done before September? % TO KEEP ? 
 	\item What kind of information do we need to store in each patch? 
 	\item What kind of information do the patches need to exchange? 
 \end{itemize}
@@ -18,8 +17,8 @@ We are trying here to answer to the following questions:
 \paragraph{}
 The splitting of the global space into patches is currently not fixed. However we can encounter three types of sticking: 
 \begin{itemize}
-	\item simple interface which sticks a whole edge on ne dimension; 
-	\item T-joint which sticks interfaces with a partial edge; 
+	\item simple interface which sticks two whole edges together; 
+	\item T-joint which sticks several edges to one edge of a patch; 
 	\item X-point where the sticking is only on one point. 
 \end{itemize}
 
@@ -197,7 +196,7 @@ The figure Fig. \ref{Patches_logical_dom} gives examples of the different sticki
 \newpage
 
 \paragraph{}
-We want here to stay general and to not focus on one patches decomposition of the domain. The figures Fig. \ref{Complex_geometry_1} and \ref{Complex_geometry_2} give example of more complex space. 
+We want to stay general here and not to focus on one specific decomposition of the domain into patches. The figures Fig. \ref{Complex_geometry_1} and \ref{Complex_geometry_2} give examples of more complex spaces. These are not necessarily for the decomposition of the separatrix.
 
 \begin{figure*}
 	\centering
@@ -227,7 +226,7 @@ We want here to stay general and to not focus on one patches decomposition of th
 
 \section{Advection equation}
 \paragraph{}
-We focus on each part of the equations system solving to answer the questions raised in the introduction. We start with the advection equations. 
+We focus on the advection and Poisson equation separately in the context of the questions raised in the introduction. We start with the advection equation. 
 
 \paragraph{}
 In the guiding center equations example, the advection equation is given by 
@@ -293,7 +292,8 @@ we compute
 \right.
 \end{equation}
 
-with a time integration method. In the case of Runge-Kutta method, the advection field needs to be evaluated at intermediate feet.
+where $\bar{\psi}$ is a discrete flow computed with
+a time integration method. In the case of Runge-Kutta method, the advection field needs to be evaluated at intermediate feet.
 
 \paragraph{\textit{Example of RK2.}}
 \begin{equation}
@@ -365,10 +365,10 @@ The same problem appears when we have solved the characteristic equation and wan
 	\begin{scope}[xshift=10cm]	
 		\node[right] at (0,1.5) {1. compute feet.};
 		\node[right] at (0,1) {2. evaluate function.};
-		\node[right] at (0,0.5) {3. transfert value.};
+		\node[right] at (0,0.5) {3. transfer value.};
 	\end{scope}
 \end{tikzpicture}
-\caption{Example of a characteristic feet outside the patch 1 in the logical and physical domains.}
+\caption{Example of a characteristic foot outside the patch 1 in the logical and physical domains.}
 \end{figure}
 
 \begin{center}
@@ -389,7 +389,8 @@ The same problem appears when we have solved the characteristic equation and wan
 Problem: the mapping from the logical to the physical domain is not always easily invertible. 
 
 \begin{itemize}
-	\item For an advection in the physical domain, if the feet is outside of the domain, how to get the feet in the logical domain of another patch (could be a not invertible mapping for the other patch)?
+	\item For an advection in the physical domain, if the feet is outside of the domain, how to get the feet in the logical domain of another patch 
+	(inverting the mapping for the other patch might be costly)?
 	\item For an advection in the pseudo-Cartesian domain, if the feet is outside of the domain, what are the equivalent coordinate in the physical domain? 
 \end{itemize}
 
@@ -572,8 +573,10 @@ To do it, we
 	\begin{itemize}
 		\item For a given point in the physical domain, how do we know in which subset it belongs to?
 	\end{itemize}
-	\item Let's assume we know in which patch we are, how can we evaluate a function? How can we get $\rho(x,y)$ with $(x,y)$ in the physical domain (especially when the mapping isn't invertible)?
-\end{itemize}
+	\item Let's assume we know in which patch we are, how can we evaluate a function? 
+			How can we get $\rho(x,y)$ with $(x,y)$ in the physical domain 
+			(especially when the mapping difficult to invert)?
+	\end{itemize}
 
 
 
