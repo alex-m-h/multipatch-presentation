@@ -423,9 +423,14 @@
 				regularity constraint
 		\item Define projection $P_h: V_h \rightarrow V_h^c$
 				and discrete differential operator $\grad_h \vcentcolon= \grad P_h$
+				$\rightarrow$ need information on mesh and spline degree of neighboring patches
 		\item Discretize Poisson equation weakly using these operators
 	\end{itemize}
-	\begin{alertblock}{}
+\end{frame}
+
+\begin{frame}{Solving Poisson with CONGA}
+	\vspace*{1.5cm}
+	\begin{alertblock}{\textbf{Advantages}}
 		\begin{itemize}
 			\item Already implemented in Psydac and successfully applied to several problems. 
 			\item Probably easier to generalize to complicated geometries than other approaches
@@ -433,6 +438,8 @@
 		\end{itemize}
 	\end{alertblock}
 \end{frame}
+
+
 
 \begin{frame}{Patch data -- Exchange}
 	\begin{itemize}
@@ -531,7 +538,7 @@
 
 \end{frame}
 
-\begin{frame}{APPENDIX - Drif-kinetic equations}
+\begin{frame}{APPENDIX - Drift-kinetic equations}
 \vspace*{0.5cm}
 \scriptsize
 
