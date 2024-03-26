@@ -150,14 +150,13 @@
 \begin{frame}{Patch data -- Exchange}
 	\begin{itemize}
 		\item Mesh-points,
-		\item Local sums to compute the derivatives at the interfaces thanks to this 
-			type of sum of spline values (Advection) ({\color{red} What is $\alpha$, please check!})
+		\item Local sums to compute the derivatives at the interfaces
 				\begin{align*}
 					\sum_{x_i \in \text{global space}} \alpha_i s(x_i) = \sum_{p \in\text{Patches}} 
 							\sum_{x_i \in p} \alpha_i s(x_i),
 				\end{align*}
-		\item Characteristic feet outside of the patch (Advection),
-		\item Interpolated values for $\mathbf{A}$ and $\rho$ (Advection).
+		\item Characteristic feet outside of the patch,
+		\item Interpolated values for $\mathbf{A}$ and $\rho$.
 	\end{itemize}
 \end{frame}
 \begin{frame}{Patch data -- Storage}
