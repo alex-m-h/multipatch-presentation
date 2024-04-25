@@ -230,64 +230,87 @@
 
 
 \section{SOLEDGE mesher}
-\begin{frame} % --------------------------------------------------------------------------------
-\frametitle{\color{vert}\textbf{SOLEDGE mesher}}
-\footnotesize	
+	\begin{frame} % --------------------------------------------------------------------------------
+	\frametitle{\color{vert}\textbf{SOLEDGE mesher}}
 
-%\vspace*{0.25cm}
-{\color{vert}$\blacktriangleright$ }
-\textbf{In \verb|Mailleur\_SOLEDGE| folder:} \par
-\qquad {\color{vert} $\rightarrow$} Tutorial videos and Matlab code. \par 
-\qquad {\color{vert} $\rightarrow$} Example of mesh: \verb|routines/mesh.h5| \par 
+	%\vspace*{0.25cm}
+	Summary of the SOLEDGE3X mesher given by Hugo Bufferand:
+	\begin{itemize}
+		\item SOLEDGE3X mesher idea is rather basic ("without mathematical strategy")
+		\item It searches only for intersections of the coordinate lines 
+				$\rightarrow$ No mapping is computed
+		\item Fulfills the current demands for SOLEDGE, but not optimized
+		\item No documentation about how it is working
+		\item Complete rewrite is desired at some point
+	\end{itemize}
 
-\vspace*{0.15cm}
-
-{\color{vert}$\triangleright$ }
-In \verb|routines/mesh.h5|: \par 
-\begin{columns}
-\scriptsize
-\begin{column}{0.3\textwidth}
-\begin{itemize}
-	\item[\verb|NMegazones|] [int] number of megazone.
-	\item[\verb|NZones|] [int] number of patch. 
-	\item[\verb|config|] [Group] configuration parameters used to build the mesh.
-	\item[6 \verb|megazone1|] [Group] information about each megazone. 
-	\item[\verb|wall|] [Group] physical coordinates $(R,Z)$ of the wall. 
-	\item[28 \verb|zone1|] [Group] information about each patch. 
-\end{itemize}
-
-\vspace*{0.15cm}
-{\color{vert} $\bullet$}  In \verb|wall|: \par 
-\ \verb|R| and \verb|Z| [array 33]; \par 
-
-\end{column}
-\begin{column}{0.6\textwidth}
-{\color{vert} $\bullet$} In \verb|config|: \par 
-\ \verb|nsep| [int]; \par 
-\ \verb|psi| [array (501x601)]; \par 
-\ \verb|psicore|, \verb|psiep1| and \verb|psiep2| [float]; \par 
-\ \verb|r| and \verb|z|  [array 501x601]; \par 
+	\begin{alertblock}{\large{Implication for usage}}
+		Since only the mesh is computed, this can not be used for an
+		isogeometric analysis type approach.
+	\end{alertblock}
 
 
-\vspace*{0.15cm}
-{\color{vert} $\bullet$}  In \verb|megazone1|: \textit{[not used anymore]} \par 
-\ \verb|configuration| [array 5]; \par 
-\ \verb|isperiodic| [int]; \par 
-\ \verb|size| [int]; \par 
+\end{frame}
 
-\vspace*{0.15cm}
+\section{SOLEDGE mesher}
+	\begin{frame} % --------------------------------------------------------------------------------
+	\frametitle{\color{vert}\textbf{SOLEDGE mesher}}
+	\footnotesize	
 
-{\color{vert} $\bullet$}  In \verb|zones1|: \par
-\ \verb|Bphi|, \verb|Br| and \verb|Bz| [array 41x21]: magnetic field at the center of cells; \par 
-\ \verb|MagNeighbors| and \verb|Neighbors| [Group of 4 [int]]: neighbors of the patch in ENSW directions; \par 
-\ \verb|Nx| and \verb|Ny| [int]; \par 
-\ \verb|Rcorner| and \verb|Zcorner| [array 40x20]: physical mesh points; \par 
-\ \verb|Rgeom| and \verb|Zgeom| [array 41x21]; \par 
-\ \verb|chi| [array 39x19]: mask function defines in wall or in plasma; \par 
-\ \verb|x|, \verb|z|, \verb|xm|, \verb|zm|, \verb|xp|, \verb|zp| [array 39x19]: logical mesh points; \par 
-\ \verb|xmax|, \verb|xmin|, \verb|zmax|, \verb|zmin| [float]. \par
-\end{column}
-\end{columns}
+	%\vspace*{0.25cm}
+	{\color{vert}$\blacktriangleright$ }
+	\textbf{In \verb|Mailleur\_SOLEDGE| folder:} \par
+	\qquad {\color{vert} $\rightarrow$} Tutorial videos and Matlab code. \par 
+	\qquad {\color{vert} $\rightarrow$} Example of mesh: \verb|routines/mesh.h5| \par 
+
+	\vspace*{0.15cm}
+
+	{\color{vert}$\triangleright$ }
+	In \verb|routines/mesh.h5|: \par 
+	\begin{columns}
+	\scriptsize
+	\begin{column}{0.3\textwidth}
+	\begin{itemize}
+		\item[\verb|NMegazones|] [int] number of megazone.
+		\item[\verb|NZones|] [int] number of patch. 
+		\item[\verb|config|] [Group] configuration parameters used to build the mesh.
+		\item[6 \verb|megazone1|] [Group] information about each megazone. 
+		\item[\verb|wall|] [Group] physical coordinates $(R,Z)$ of the wall. 
+		\item[28 \verb|zone1|] [Group] information about each patch. 
+	\end{itemize}
+
+	\vspace*{0.15cm}
+	{\color{vert} $\bullet$}  In \verb|wall|: \par 
+	\ \verb|R| and \verb|Z| [array 33]; \par 
+
+	\end{column}
+	\begin{column}{0.6\textwidth}
+	{\color{vert} $\bullet$} In \verb|config|: \par 
+	\ \verb|nsep| [int]; \par 
+	\ \verb|psi| [array (501x601)]; \par 
+	\ \verb|psicore|, \verb|psiep1| and \verb|psiep2| [float]; \par 
+	\ \verb|r| and \verb|z|  [array 501x601]; \par 
+
+
+	\vspace*{0.15cm}
+	{\color{vert} $\bullet$}  In \verb|megazone1|: \textit{[not used anymore]} \par 
+	\ \verb|configuration| [array 5]; \par 
+	\ \verb|isperiodic| [int]; \par 
+	\ \verb|size| [int]; \par 
+
+	\vspace*{0.15cm}
+
+	{\color{vert} $\bullet$}  In \verb|zones1|: \par
+	\ \verb|Bphi|, \verb|Br| and \verb|Bz| [array 41x21]: magnetic field at the center of cells; \par 
+	\ \verb|MagNeighbors| and \verb|Neighbors| [Group of 4 [int]]: neighbors of the patch in ENSW directions; \par 
+	\ \verb|Nx| and \verb|Ny| [int]; \par 
+	\ \verb|Rcorner| and \verb|Zcorner| [array 40x20]: physical mesh points; \par 
+	\ \verb|Rgeom| and \verb|Zgeom| [array 41x21]; \par 
+	\ \verb|chi| [array 39x19]: mask function defines in wall or in plasma; \par 
+	\ \verb|x|, \verb|z|, \verb|xm|, \verb|zm|, \verb|xp|, \verb|zp| [array 39x19]: logical mesh points; \par 
+	\ \verb|xmax|, \verb|xmin|, \verb|zmax|, \verb|zmin| [float]. \par
+	\end{column}
+	\end{columns}
 
 
 \end{frame}
